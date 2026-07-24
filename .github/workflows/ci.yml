@@ -32,7 +32,20 @@ jobs:
       - name: Type check
         run: mypy src/canospar
       - name: Unit tests
-        run: pytest -q tests/unit
+        shell: bash
+        run: |
+          set +e
+          output="$(pytest -q tests/unit 2>&1)"
+          status=$?
+          printf '%s\n' "$output"
+          if ((status != 0)); then
+            diagnostic="$(printf '%s\n' "$output" | tail -n 80)"
+            diagnostic="${diagnostic//'%'/'%25'}"
+            diagnostic="${diagnostic//$'\r'/'%0D'}"
+            diagnostic="${diagnostic//$'\n'/'%0A'}"
+            echo "::error title=Unit test failure::$diagnostic"
+          fi
+          exit "$status"
       - name: Integration tests
         run: pytest -q tests/integration
       - name: Run smoke, workflow, and coverage acceptance
