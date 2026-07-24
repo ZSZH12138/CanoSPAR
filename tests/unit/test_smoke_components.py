@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import json
 import shutil
 from pathlib import Path
 from uuid import uuid4
@@ -56,6 +57,19 @@ def test_batch_smoke_graphs_uses_a_real_pyg_dataloader_batch() -> None:
     assert batch.batch.tolist() == [0] * 4 + [1] * 4 + [2] * 4
     assert batch.ptr.tolist() == [0, 4, 8, 12]
     assert batch.x.device.type == "cpu"
+
+
+def test_run_smoke_records_contract_version_in_report() -> None:
+    output_dir = Path("artifacts") / f"smoke-contract-version-{uuid4().hex}"
+    destination = _PROJECT_ROOT / output_dir
+
+    try:
+        report = smoke_test.run_smoke([f"paths.output_dir={output_dir.as_posix()}"])
+        saved_report = json.loads((destination / "smoke_report.json").read_text(encoding="utf-8"))
+
+        assert report["contract_version"] == saved_report["contract_version"] == "1.1.0"
+    finally:
+        shutil.rmtree(destination, ignore_errors=True)
 
 
 def test_run_smoke_does_not_publish_partial_artifacts_on_write_failure(

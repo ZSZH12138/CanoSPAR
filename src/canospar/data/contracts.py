@@ -1,4 +1,4 @@
-"""Validated, immutable data contracts for CanoSPAR graph samples."""
+"""Validated, frozen data contracts with defensive copies of caller-owned state."""
 
 from __future__ import annotations
 
@@ -8,12 +8,20 @@ from collections.abc import Mapping
 from copy import deepcopy
 from dataclasses import dataclass
 from numbers import Real
+from types import MappingProxyType
 from typing import Any
 
 import torch
 from torch_geometric.data import Data
 
 _VALID_MODALITIES = frozenset({"smri", "dmri", "fmri"})
+_REQUIRED_COHORT_METADATA = frozenset(
+    {
+        "cohort_source",
+        "unrelated_list_version",
+        "kinship_control_method",
+    }
+)
 
 
 def _require_non_empty_string(value: object, field_name: str) -> None:
@@ -54,6 +62,17 @@ def _validate_covariates(value: object) -> None:
             raise ValueError("covariates values must be floats or strings")
         if isinstance(covariate, float) and not math.isfinite(covariate):
             raise ValueError("covariates float values must be finite")
+
+
+def _validate_cohort_metadata(value: object) -> None:
+    if not isinstance(value, Mapping):
+        raise ValueError("cohort_metadata must be a mapping")
+    missing = sorted(_REQUIRED_COHORT_METADATA.difference(value))
+    if missing:
+        raise ValueError(f"cohort_metadata is missing required fields: {missing}")
+    for name, metadata_value in value.items():
+        _require_non_empty_string(name, "cohort_metadata key")
+        _require_non_empty_string(metadata_value, f"cohort_metadata[{name!r}]")
 
 
 @dataclass(frozen=True)
@@ -177,6 +196,7 @@ class BrainMultiGraphSample:
     qc_vector: Mapping[str, float]
     target: float | int
     covariates: Mapping[str, float | str]
+    cohort_metadata: Mapping[str, str]
 
     def __post_init__(self) -> None:
         """Detach nested graph mappings and scalar metadata from caller-owned mappings."""
@@ -187,6 +207,12 @@ class BrainMultiGraphSample:
             object.__setattr__(self, "qc_vector", dict(self.qc_vector))
         if isinstance(self.covariates, Mapping):
             object.__setattr__(self, "covariates", dict(self.covariates))
+        if isinstance(self.cohort_metadata, Mapping):
+            object.__setattr__(
+                self,
+                "cohort_metadata",
+                MappingProxyType(dict(self.cohort_metadata)),
+            )
 
     def validate(self) -> None:
         """Validate sample identifiers, graph/modality consistency, and scalar metadata."""
@@ -231,3 +257,4 @@ class BrainMultiGraphSample:
             _validate_finite_number(qc_value, f"qc_vector[{qc_name!r}]")
         _validate_finite_number(self.target, "target")
         _validate_covariates(self.covariates)
+        _validate_cohort_metadata(self.cohort_metadata)

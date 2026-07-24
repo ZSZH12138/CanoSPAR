@@ -1,6 +1,6 @@
 # Experiment contract
 
-Contract version: `1.0.0`
+Contract version: `1.1.0`
 
 This contract applies to every CanoSPAR experiment. Week 1 supplies only
 CPU-only infrastructure; it does not implement or train a CanoSPAR model,
@@ -17,10 +17,24 @@ download data, or execute MRI tooling.
 3. **Train-only preprocessing.** Every learned preprocessing operation is fitted
    exclusively on the training partition. Its frozen parameters may be applied
    to validation and test data, but must never be refitted on either partition.
-4. **HCP family boundary.** HCP records are grouped by `Family_ID`; members of
-   one family must never cross training, validation, or test partitions.
+4. **HCP official-unrelated-cohort boundary.** The preregistered HCP main
+   protocol uses HCP-Young Adult 2025 Open Access imaging and an official
+   unrelated-subject list as its candidate whitelist. The final cohort is
+   frozen only after intersecting that whitelist with modality availability,
+   target completeness, and QC results. Main-experiment partitions are
+   subject-level (`group_id=subject_id`), and every sample records
+   `cohort_source`, `unrelated_list_version`, and `kinship_control_method`.
+   The official-list SHA-256 is recorded once in manifest-level provenance
+   rather than duplicated in every sample.
+   The full Open Access cohort may be used for pipeline debugging but must not
+   be randomly split and reported as the main result. HCP-YA 2025 imaging must
+   not be mixed with 2017 S1200 processed imaging. If Restricted Access is
+   later approved, `Family_ID` grouping may be added only as an explicitly
+   labeled extension experiment and must not replace this main protocol.
 5. **PPMI subject boundary.** PPMI records are grouped by `subject_id`; every
-   visit from one subject must remain in the same partition.
+   visit from one subject must remain in the same partition. PPMI samples use
+   an explicit `not_applicable` value for unrelated-list metadata so that
+   missing HCP-specific provenance is never confused with an omitted field.
 6. **Label-free graph construction.** Graph topology, edge weights, node
    features, and graph filters must not use labels, targets, or statistics
    derived from them.
@@ -44,14 +58,18 @@ download data, or execute MRI tooling.
     real user name. Examples may use only explicit placeholders such as
     `C:/Users/<user>/artifacts` or `/home/<user>/artifacts`.
 14. **Restricted data stays outside Git.** Raw, controlled-access, and otherwise
-    restricted data—including derived files that cannot be redistributed—must
-    never be committed to Git. Only non-sensitive manifests, hashes, schemas,
-    and generated smoke fixtures are permitted.
+    non-redistributable data or derivatives must never be committed to Git.
+    Version-controlled material is limited to non-sensitive manifests, hashes,
+    schemas, approved documentation, summary reports, and synthetic or smoke
+    fixtures that contain no restricted subject-level data.
 15. **Versioned contract changes.** Any change to this contract requires an
     architecture decision record in `docs/decisions/` and a version increment.
     Every experiment artifact and metadata record must include
     `contract_version` with the exact version used for that run.
 
-Outputs remain confined to `artifacts/`. The Week 1 smoke run produces a
-resolved configuration, provenance record, and smoke report from small,
-generated in-memory graphs; it is not a scientific evaluation.
+Runtime-generated intermediate data, graph caches, model checkpoints, and
+other rerunnable artifacts remain confined to `artifacts/`. Curated,
+non-sensitive documentation and summary reports may live under `docs/` and
+`reports/` when intentionally version-controlled. The Week 1 smoke run
+produces a resolved configuration, provenance record, and smoke report from
+small, generated in-memory graphs; it is not a scientific evaluation.

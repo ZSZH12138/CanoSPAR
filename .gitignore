@@ -42,3 +42,9 @@ htmlcov/**
 build/**
 dist/**
 *.egg-info/
+
+data/raw/
+data/manifests/private/
+*.cookie
+*.token
+*.credentials

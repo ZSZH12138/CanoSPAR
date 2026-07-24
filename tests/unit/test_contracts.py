@@ -32,13 +32,18 @@ def _sample(
     fields: dict[str, Any] = {
         "subject_id": "subject-001",
         "visit_id": "baseline",
-        "group_id": "family-001",
+        "group_id": "subject-001",
         "site_id": "site-a",
         "graphs": graphs,
         "modality_available": {"smri": True, "dmri": False, "fmri": False},
         "qc_vector": {"mean_fd": 0.12},
         "target": 1.5,
         "covariates": {"age": 30.0, "sex": "F"},
+        "cohort_metadata": {
+            "cohort_source": "hcp_official_unrelated",
+            "unrelated_list_version": "S900-unrelated.csv",
+            "kinship_control_method": "official_unrelated_cohort",
+        },
     }
     return BrainMultiGraphSample(**(fields | overrides))
 
@@ -304,22 +309,76 @@ def test_sample_requires_flat_string_or_float_covariates(
         sample.validate()
 
 
+@pytest.mark.parametrize(
+    "cohort_metadata",
+    [
+        {},
+        {
+            "cohort_source": "hcp_official_unrelated",
+            "unrelated_list_version": "S900-unrelated.csv",
+        },
+        {
+            "cohort_source": "hcp_official_unrelated",
+            "unrelated_list_version": "",
+            "kinship_control_method": "official_unrelated_cohort",
+        },
+        {
+            "cohort_source": "hcp_official_unrelated",
+            "unrelated_list_version": "S900-unrelated.csv",
+            "kinship_control_method": 1,
+        },
+    ],
+)
+def test_sample_requires_complete_string_cohort_metadata(
+    valid_graph: GraphData, cohort_metadata: Mapping[str, object]
+) -> None:
+    sample = _sample(
+        graphs={"smri": {"morphometry": valid_graph}},
+        cohort_metadata=cohort_metadata,
+    )
+
+    with pytest.raises(ValueError, match="cohort_metadata"):
+        sample.validate()
+
+
+def test_sample_accepts_explicit_not_applicable_cohort_metadata(
+    valid_graph: GraphData,
+) -> None:
+    sample = _sample(
+        graphs={"smri": {"morphometry": valid_graph}},
+        cohort_metadata={
+            "cohort_source": "ppmi",
+            "unrelated_list_version": "not_applicable",
+            "kinship_control_method": "not_applicable",
+        },
+    )
+
+    sample.validate()
+
+
 def test_sample_copies_constructor_mappings(valid_graph: GraphData) -> None:
     graphs = {"smri": {"morphometry": valid_graph}}
     availability = {"smri": True, "dmri": False, "fmri": False}
     qc_vector = {"mean_fd": 0.12}
     covariates = {"age": 30.0}
+    cohort_metadata = {
+        "cohort_source": "hcp_official_unrelated",
+        "unrelated_list_version": "S900-unrelated.csv",
+        "kinship_control_method": "official_unrelated_cohort",
+    }
 
     sample = _sample(
         graphs=graphs,
         modality_available=availability,
         qc_vector=qc_vector,
         covariates=covariates,
+        cohort_metadata=cohort_metadata,
     )
     graphs["smri"].clear()
     availability["smri"] = False
     qc_vector["mean_fd"] = 99.0
     covariates["age"] = 99.0
+    cohort_metadata["cohort_source"] = "mutated"
     valid_graph.x[0, 0] = 99.0
     valid_graph.edge_index[0, 0] = 1
     valid_graph.edge_weight[0] = 99.0
@@ -335,6 +394,7 @@ def test_sample_copies_constructor_mappings(valid_graph: GraphData) -> None:
     assert sample.modality_available == {"smri": True, "dmri": False, "fmri": False}
     assert sample.qc_vector == {"mean_fd": 0.12}
     assert sample.covariates == {"age": 30.0}
+    assert sample.cohort_metadata["cohort_source"] == "hcp_official_unrelated"
 
 
 def test_sample_validation_does_not_modify_mappings(valid_graph: GraphData) -> None:
@@ -342,13 +402,25 @@ def test_sample_validation_does_not_modify_mappings(valid_graph: GraphData) -> N
     availability = {"smri": True, "dmri": False, "fmri": False}
     qc_vector = {"mean_fd": 0.12}
     covariates = {"age": 30.0}
+    cohort_metadata = {
+        "cohort_source": "hcp_official_unrelated",
+        "unrelated_list_version": "S900-unrelated.csv",
+        "kinship_control_method": "official_unrelated_cohort",
+    }
     sample = _sample(
         graphs=graphs,
         modality_available=availability,
         qc_vector=qc_vector,
         covariates=covariates,
+        cohort_metadata=cohort_metadata,
     )
-    before = (graphs.copy(), availability.copy(), qc_vector.copy(), covariates.copy())
+    before = (
+        graphs.copy(),
+        availability.copy(),
+        qc_vector.copy(),
+        covariates.copy(),
+        cohort_metadata.copy(),
+    )
 
     sample.validate()
 
@@ -356,6 +428,14 @@ def test_sample_validation_does_not_modify_mappings(valid_graph: GraphData) -> N
     assert availability == before[1]
     assert qc_vector == before[2]
     assert covariates == before[3]
+    assert cohort_metadata == before[4]
+
+
+def test_sample_cohort_metadata_is_immutable(valid_graph: GraphData) -> None:
+    sample = _sample(graphs={"smri": {"morphometry": valid_graph}})
+
+    with pytest.raises(TypeError):
+        sample.cohort_metadata["cohort_source"] = "mutated"  # type: ignore[index]
 
 
 def test_sample_is_frozen(valid_graph: GraphData) -> None:

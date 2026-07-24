@@ -16,6 +16,7 @@ Status: TypeAlias = Literal["PASS", "FAIL", "SKIP_WITH_REASON"]
 
 _PROJECT_ROOT = Path(__file__).resolve().parents[1]
 _REPORT_PATH = _PROJECT_ROOT / "reports" / "week1" / "verification_results.json"
+_CONTRACT_VERSION = "1.1.0"
 _WINDOWS_ABSOLUTE_PATH = re.compile(r"(?i)\b[a-z]:[\\/][^\r\n\"']+")
 _POSIX_ABSOLUTE_PATH = re.compile(r"(?<![A-Za-z0-9_:])/[^\r\n\"']+")
 
@@ -42,6 +43,7 @@ _STRUCTURE_CHECK = dedent(
         "containers/versions.md",
         "docs/experiment_contract.md",
         "docs/decisions/README.md",
+        "docs/decisions/0001-hcp-unrelated-cohort-and-output-boundaries.md",
         "src/canospar/__init__.py",
         "src/canospar/data/__init__.py",
         "src/canospar/data/contracts.py",
@@ -138,10 +140,12 @@ _ARTIFACT_CHECK = dedent(
     expected = (config_path, provenance_path, report_path)
     missing = [path.as_posix() for path in expected if not path.is_file()]
     assert not missing, f"Missing smoke artifacts: {missing}"
-    config_hash = hash_yaml_config(OmegaConf.load(config_path))
+    resolved_config = OmegaConf.load(config_path)
+    config_hash = hash_yaml_config(resolved_config)
     provenance = json.loads(provenance_path.read_text(encoding="utf-8"))
     smoke_report = json.loads(report_path.read_text(encoding="utf-8"))
     assert config_hash == provenance["config_hash"] == smoke_report["config_hash"]
+    assert smoke_report["contract_version"] == resolved_config.contract_version == "1.1.0"
     """
 ).strip()
 
@@ -150,10 +154,13 @@ _PROVENANCE_CHECK = dedent(
     import json
     from pathlib import Path
 
+    from omegaconf import OmegaConf
+
     from scripts.check_no_hardcoded_paths import POSIX_USER_PATH, WINDOWS_USER_PATH
 
     from canospar.utils.provenance import _is_path_value
 
+    resolved_config = OmegaConf.load("artifacts/smoke/resolved_config.yaml")
     record = json.loads(
         Path("artifacts/smoke/provenance.json").read_text(encoding="utf-8")
     )
@@ -179,6 +186,7 @@ _PROVENANCE_CHECK = dedent(
     }
     missing = sorted(required.difference(record))
     assert not missing, f"Missing provenance fields: {missing}"
+    assert record["contract_version"] == resolved_config.contract_version == "1.1.0"
     assert record["timestamp_utc"].endswith("Z")
     assert record["device"] == "cpu"
     assert record["cuda_available"] is False
@@ -442,6 +450,7 @@ def _write_report(results: Sequence[CheckResult], report_path: Path) -> None:
     }
     required_failed = any(result.required and result.status == "FAIL" for result in results)
     payload = {
+        "contract_version": _CONTRACT_VERSION,
         "overall_status": "FAIL" if required_failed else "PASS",
         "summary": summary,
         "checks": [result.as_record() for result in results],

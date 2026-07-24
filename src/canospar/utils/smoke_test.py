@@ -161,6 +161,7 @@ def run_smoke(overrides: Sequence[str] | None = None) -> dict[str, JsonValue]:
         structure = _structure_summary(graphs, batch)
         report: dict[str, JsonValue] = {
             "config_hash": config_hash,
+            "contract_version": cast(str, config.contract_version),
             "device": device.type,
             "status": "success",
             "seed": cast(int, config.random_seed),

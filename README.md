@@ -9,8 +9,8 @@ provides a reproducible, CPU-only foundation for later research work; it does
 Week 1 provides:
 
 - a Python package with deterministic hashing and safe output-path utilities;
-- validated graph data contracts with defensive copying and real PyTorch
-  Geometric conversion/batching;
+- validated graph data contracts with cohort-provenance metadata, defensive
+  copying, and real PyTorch Geometric conversion/batching;
 - Hydra/OmegaConf configuration groups with a forced `device: cpu` policy;
 - a deterministic three-graph smoke workflow using generated in-memory data;
 - resolved-configuration, provenance, and smoke-report artifacts;
@@ -88,8 +88,13 @@ failures remain easy to locate:
 ```text
 python -m pytest -q tests/unit
 python -m pytest -q tests/integration
-python -m pytest --cov=canospar --cov-report=term-missing
+python -m pytest -q --cov=canospar --cov-report=term-missing --cov-fail-under=80 tests
+python scripts/verify_week1.py
 ```
+
+The final command is the authoritative Week 1 acceptance path. It runs 17
+ordered checks, including the mandatory 80% coverage gate, smoke/provenance
+validation, static analysis, and the Snakemake dry-run.
 
 The deterministic smoke command builds three tiny CPU graphs, batches them with
 the real PyTorch Geometric `DataLoader`, and writes three files under
@@ -118,7 +123,8 @@ python -m canospar.utils.smoke_test random_seed=11 graph.num_nodes=8 paths.outpu
 ```
 
 `device=cuda`, parent traversal, personal absolute paths, restricted-data
-directories, and project-local output paths outside `artifacts/` are rejected.
+directories, and configured runtime output paths outside `artifacts/` are
+rejected.
 
 ## Data, artifacts, and provenance
 
@@ -127,9 +133,11 @@ The repository ignores common dataset roots and neuroimaging/model files,
 including `data/`, `raw/`, `derivatives/`, `bids/`, `hcp/`, and `ppmi/`.
 Week 1 does not download or inspect real participant data.
 
-Generated outputs belong under `artifacts/`. That tree is ignored by Git, so
-smoke outputs and later run artifacts are not committed accidentally. Do not
-force-add artifacts or restricted data.
+Generated, rerunnable runtime outputs belong under `artifacts/`. That tree is
+ignored by Git, so smoke outputs and later run artifacts are not committed
+accidentally. Curated, non-sensitive documentation and summary reports may be
+version-controlled under `docs/` and `reports/`. Do not force-add artifacts or
+restricted data.
 
 Each smoke run writes a privacy-preserving provenance record containing:
 

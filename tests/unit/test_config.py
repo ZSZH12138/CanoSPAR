@@ -18,7 +18,7 @@ def test_default_config_forces_cpu() -> None:
 def test_default_config_exposes_the_experiment_contract_fields() -> None:
     config = compose_config()
 
-    assert config.contract_version == "1.0.0"
+    assert config.contract_version == "1.1.0"
     assert config.random_seed == 7
     assert config.logging.level == "info"
     assert config.logging.save_resolved_config is True

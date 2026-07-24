@@ -119,7 +119,7 @@ random_seed
 BrainMultiGraphSample = {
     "subject_id": str,
     "visit_id": str,
-    "group_id": str,      # HCP 为 Family_ID；PPMI 为 subject_id
+    "group_id": str,      # HCP 官方 unrelated cohort 与 PPMI 均使用 subject_id；若另获 Restricted Access，可选用 Family_ID
     "site_id": str,
     "graphs": {
         "smri": {relation_name: GraphData},
@@ -130,6 +130,7 @@ BrainMultiGraphSample = {
     "qc_vector": dict[str, float],
     "target": float | int,
     "covariates": dict[str, float | str],
+    "cohort_metadata": dict[str, str],  # cohort_source / unrelated_list_version / kinship_control_method
 }
 ```
 
@@ -162,8 +163,9 @@ GraphData = {
 
 此时只申请和盘点，不处理 PPMI 模型。
 
-- HCP Young Adult S1200 包含健康年轻成人的结构、静息态功能和扩散 MRI，并包含家庭结构；最终拆分必须使用 `Family_ID` [R1][R2]。
+- HCP 主数据使用 HCP-Young Adult 2025 Open Access 影像；正式监督实验采用 HCP 官方公开的 unrelated 受试者名单作为候选白名单，并与 2025 版三模态可用性、目标完整性和 QC 结果取交集 [R1][R2]。`Family_ID` 不再作为必需字段；完整 Open Access 队列只能用于管线调试，不能直接随机拆分后作为主结果 [R21][R22]。
 - PPMI 是纵向、多中心的 PD 自然史研究，具有健康对照、PD、前驱期人群及多次随访；当前 MRI 手册包含 T1、rs-fMRI 和 DTI 流程 [R3][R4]。
+- HCP-YA 2025 影像必须从当前官方平台获取，不得与 2017 S1200 处理影像混用；旧 DataLad HCP1200 仓库仅作为下载工程参考，不作为本项目主数据源 [R1][R23]。
 
 建立：
 
@@ -222,10 +224,19 @@ src/canospar/data/validate_manifest.py
 
 ```text
 subject_id, visit_id, family_id, site_id, scanner,
+cohort_source, unrelated_list_version, kinship_control_method,
 age, sex, diagnosis, target, target_date,
 t1_path, dwi_path, fmri_path,
 t1_available, dwi_available, fmri_available,
 raw_qc_status, exclusion_reason
+```
+
+其中 HCP 的 `family_id` 在不使用 Restricted Access 时允许为空，但必须设置：
+
+```text
+cohort_source = hcp_official_unrelated
+unrelated_list_version = <文件名或发布日期>
+kinship_control_method = official_unrelated_cohort
 ```
 
 ## 2.5 初始样本审计
@@ -234,7 +245,7 @@ raw_qc_status, exclusion_reason
 
 - 每个模态可用人数；
 - 三模态交集人数；
-- HCP 家庭数量与每家庭人数；
+- HCP 官方 unrelated 名单原始人数、与 HCP-YA 2025 可用受试者的交集人数、三模态完整人数及目标完整人数；
 - PPMI 站点、扫描仪、诊断和访视分布；
 - 目标缺失率；
 - 模态缺失模式；
@@ -244,7 +255,7 @@ raw_qc_status, exclusion_reason
 ## 2.6 通过标准
 
 - `dataset_manifest.csv` 可由脚本重复生成且哈希一致；
-- 同一 HCP 家庭可被识别；
+- HCP 正式样本全部属于冻结的官方 unrelated 名单，受试者 ID 唯一，且名单来源、版本与 SHA256 哈希可追踪；
 - 同一 PPMI 受试者的所有访视可被识别；
 - 数据缺失原因区分为“未采集、下载失败、预处理失败、QC 失败”；
 - HCP 主任务已冻结并写入 `configs/data/hcp.yaml`；
@@ -260,7 +271,7 @@ raw_qc_status, exclusion_reason
 
 - 覆盖男性/女性；
 - 覆盖目标分数的低、中、高区间；
-- 不包含同一家庭的多名成员；
+- 全部来自冻结的官方 unrelated 候选名单，且受试者 ID 不重复；
 - 三种 MRI 均完整；
 - 不追求统计代表性，只用于管线调试。
 
@@ -346,7 +357,7 @@ reports/data_qc/pilot_failure_gallery/
 
 ---
 
-# 第 8–12 周：完成 HCP 全量数据整理和质量控制
+# 第 8–12 周：完成 HCP 正式 unrelated cohort 数据整理和质量控制
 
 ## 4.1 固定 atlas
 
@@ -587,18 +598,19 @@ input_feature_hash, qc_summary
 
 ## 6.1 固定数据拆分
 
-HCP 必须以家庭为 group。
+HCP 正式监督实验只使用冻结的官方 unrelated cohort；`group_id=subject_id`。官方 S900 unrelated 名单仅是候选白名单，最终 cohort 必须与 HCP-YA 2025 三模态可用性、目标完整性和 QC 结果取交集，并保存名单来源、版本与哈希。亲缘或重复受试者跨折会削弱独立性，因此不得以完整 Open Access 队列的普通随机拆分替代该协议 [R21]。
 
 推荐最终协议：
 
-- 外层 5 折 `GroupKFold` 或近似分层的 group split；
+- 外层 5 折受试者级 KFold，回归任务可在训练数据内按目标分位箱做近似分层；
 - 内层 3 折选择超参数；
-- 所有同家庭成员只存在于一个外层折；
+- 任一受试者只存在于一个外层折；
 - 主结果使用固定的 5 个随机种子；
 - 开发阶段仅使用第 1 外层折，减少计算；
-- 最终测试前锁定全部候选超参数。
+- 最终测试前锁定全部候选超参数；
+- 若未来另获 Restricted Access，可在更大 HCP 队列上增加 `Family_ID` group split 作为扩展实验，但不替换当前预注册主协议。
 
-回归任务分层只能用于保持目标分布，不能拆散家庭。
+回归任务的分位分层只能用于保持目标分布，所有预处理和分箱边界必须在训练折内确定。
 
 ## 6.2 非图基线
 
@@ -1316,7 +1328,7 @@ weight_decay: [1e-5, 1e-4, 1e-3]
 ## 14.1 E0：数据和泄漏负控
 
 - 标签打乱；
-- 家庭随机拆分与家庭分组拆分对比，仅用于证明泄漏风险；
+- 完整 Open Access 队列的受试者级随机拆分仅作为非正式敏感性分析，不进入主表；由于其与 unrelated cohort 在样本规模和组成上同时不同，不得把二者差异直接解释为纯家庭泄漏效应；
 - 使用仅人口学协变量模型；
 - 检查模型是否主要依赖年龄/性别。
 
@@ -1698,7 +1710,7 @@ reports/final/
 逐项检查：
 
 - 测试折是否参与任何拟合；
-- HCP 家庭是否跨折；
+- HCP 正式样本是否全部属于冻结的官方 unrelated 名单，且是否存在受试者跨折或重复记录；
 - PPMI 受试者是否跨折；
 - harmonization 是否在训练折内；
 - 图阈值是否使用测试标签；
@@ -1712,7 +1724,7 @@ reports/final/
 
 ### 数据证据
 
-- [ ] HCP 主数据完成 family-aware 严格验证；
+- [ ] HCP 主数据完成官方 unrelated cohort 下的严格受试者级验证，名单来源、版本、哈希和交集筛选过程完整可追踪；
 - [ ] PPMI 完成独立受试者、多中心或纵向验证；
 - [ ] 两个数据集均有完整 QC 和排除流程。
 
@@ -1748,7 +1760,7 @@ reports/final/
 
 当算力或时间不足时，按以下顺序保留，后面的可删：
 
-1. HCP family-aware 数据协议；
+1. HCP 官方 unrelated cohort 数据协议；
 2. 非图、单模态和普通多模态强基线；
 3. 规范谱坐标的合成机制验证；
 4. 精确滤波与 Chebyshev 对照；
@@ -1767,10 +1779,10 @@ reports/final/
 
 ## 数据与影像处理
 
-- **[R1] HCP Young Adult S1200 release**
-  https://www.humanconnectome.org/study/hcp-young-adult/article/announcing-1200-subject-data-release
-- **[R2] HCP S1200 Family Structure / Family_ID**
-  https://www.humanconnectome.org/study/hcp-young-adult/article/s1200-family-structure-test-retest-interval-updates
+- **[R1] HCP-Young Adult 2025 release**
+  https://www.humanconnectome.org/study/hcp-young-adult/document/hcp-young-adult-2025-release
+- **[R2] HCP S900 Unrelated Subjects CSV**
+  https://wiki.humanconnectome.org/docs/S900%20Unrelated%20Subjects%20CSV.html
 - **[R3] PPMI MRI Procedure Manual, Final v1.0, 2025**
   https://www.ppmi-info.org/sites/default/files/docs/PPMI_002_MRI_Imaging_Manual_Final_v1.0_20250122_Executed-1.pdf
 - **[R4] PPMI data access**
@@ -1826,3 +1838,12 @@ reports/final/
 - **[R20] neuroHarmonize / neuroCombat**
   https://github.com/rpomponio/neuroHarmonize
   https://github.com/Jfortin1/neuroCombat
+
+## HCP 队列、访问与泄漏控制
+
+- **[R21] Rosenblatt et al. Data leakage inflates prediction performance in connectome-based machine learning models. Nature Communications, 2024**
+  https://doi.org/10.1038/s41467-024-46150-w
+- **[R22] HCP Quick Reference: Open Access vs Restricted Data**
+  https://www.humanconnectome.org/study/hcp-young-adult/document/quick-reference-open-access-vs-restricted-data
+- **[R23] DataLad HCP Open Access repository（旧 HCP1200/S1200；仅作工程参考）**
+  https://github.com/datalad-datasets/human-connectome-project-openaccess

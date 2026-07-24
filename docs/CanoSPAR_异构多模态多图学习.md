@@ -299,7 +299,7 @@ $$
 
 - 原始多模态数据；
 - 标签或回归目标；
-- 受试者、站点、家庭、时间等分组信息；
+- 受试者、站点、家庭（若可用）、时间或官方去亲缘 cohort 等分组与队列信息；
 - 模态可用性；
 - 原始 QC 指标。
 
@@ -307,7 +307,7 @@ $$
 
 1. 明确节点级、边级或图级任务；
 2. 固定训练、验证、测试拆分；
-3. 对家庭或站点相关数据执行 group-aware split；
+3. 对家庭或站点相关数据执行 group-aware split；若家庭标识不可用，则 HCP 正式实验必须使用官方预定义的 unrelated cohort，并在冻结 cohort 后执行受试者级拆分；
 4. 所有数据驱动参数仅在训练集拟合；
 5. 固定构图参数、编码器版本和随机种子；
 6. 保存数据版本、配置文件和缓存哈希。
@@ -324,7 +324,8 @@ $$
 
 - 任一测试样本不参与归一化、阈值、特征选择或 harmonization 参数拟合；
 - 每个样本的模态、图、标签和拆分索引可追踪；
-- 相同配置可重新生成相同图缓存。
+- 相同配置可重新生成相同图缓存；
+- 若 HCP 不使用 Restricted Access，正式样本必须全部属于冻结的官方 unrelated 名单，且名单版本、来源与哈希可追踪；不得对可能含亲属的完整队列直接随机拆分并作为主结果。
 
 ---
 
@@ -1208,3 +1209,17 @@ https://github.com/deep-spin/entmax
 
 [29] SLQ Reference Implementation.
 https://github.com/Shashankaubaru/SLQ
+
+## F. HCP 数据协议与泄漏控制
+
+[30] Human Connectome Project. **HCP-Young Adult 2025 Release.** 2025.
+https://www.humanconnectome.org/study/hcp-young-adult/document/hcp-young-adult-2025-release
+
+[31] Human Connectome Project Public Pages. **S900 Unrelated Subjects CSV.**
+https://wiki.humanconnectome.org/docs/S900%20Unrelated%20Subjects%20CSV.html
+
+[32] Rosenblatt, M., Tejavibulya, L., Jiang, R., et al. **Data leakage inflates prediction performance in connectome-based machine learning models.** Nature Communications, 2024.
+https://doi.org/10.1038/s41467-024-46150-w
+
+[33] DataLad Datasets. **human-connectome-project-openaccess**（旧 HCP1200/S1200 数据检索仓库，仅作工程参考，不作为 HCP-YA 2025 主数据源）.
+https://github.com/datalad-datasets/human-connectome-project-openaccess

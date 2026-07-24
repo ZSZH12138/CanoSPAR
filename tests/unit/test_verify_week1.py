@@ -52,6 +52,7 @@ def test_check_specs_have_the_required_order_and_module_invocations() -> None:
         "containers/model.def",
         "configs/paths/local.example.yaml",
         "docs/experiment_contract.md",
+        "docs/decisions/0001-hcp-unrelated-cohort-and-output-boundaries.md",
         "src/canospar/data/contracts.py",
         "src/canospar/utils/smoke_test.py",
         "scripts/bootstrap.ps1",
@@ -61,6 +62,14 @@ def test_check_specs_have_the_required_order_and_module_invocations() -> None:
     )
     assert all(path in verify_week1._STRUCTURE_CHECK for path in required_paths)
     assert '"platform"' in verify_week1._PROVENANCE_CHECK
+    assert (
+        'record["contract_version"] == resolved_config.contract_version == "1.1.0"'
+        in verify_week1._PROVENANCE_CHECK
+    )
+    assert (
+        'smoke_report["contract_version"] == resolved_config.contract_version == "1.1.0"'
+        in verify_week1._ARTIFACT_CHECK
+    )
     assert "WINDOWS_USER_PATH" in verify_week1._PROVENANCE_CHECK
     assert "POSIX_USER_PATH" in verify_week1._PROVENANCE_CHECK
     assert "data/example.nii.gz" in verify_week1._GITIGNORE_CHECK
@@ -109,6 +118,7 @@ def test_successful_verification_runs_all_checks_and_always_writes_report(
     assert [result["name"] for result in report["checks"]] == EXPECTED_CHECK_NAMES
     assert [result["status"] for result in report["checks"]] == ["PASS"] * 17
     assert report["overall_status"] == "PASS"
+    assert report["contract_version"] == "1.1.0"
     assert report["summary"] == {"FAIL": 0, "PASS": 17, "SKIP_WITH_REASON": 0}
     output = capsys.readouterr().out  # type: ignore[attr-defined]
     assert "01. python_version: PASS" in output
