@@ -76,7 +76,7 @@ Anaconda 安装位置在所有说明中统一写作 `<ANACONDA_ROOT>`。
 | 配置系统 | `compose_config` 使用真实 Hydra 组合五个配置组；验证中央处理器、契约版本、随机种子、图规模和规范相对输出路径；`save_resolved_config` 保存解析 YAML 与配置哈希。 | `device=cuda`、绝对输出路径、父目录穿越和非 `artifacts/` 输出均被拒绝。 |
 | 哈希和 provenance | 使用规范 JSON/YAML 与 SHA-256 实现内容哈希；provenance 记录 UTC、契约、Git、配置、清单、容器、随机种子、版本、设备和脱敏命令；硬件门禁保留原始与豁免后结论。 | 缺失提交、清单或容器时写 `null`、状态和原因；不伪造值，不写个人或机器敏感信息。 |
 | smoke test | 固定种子生成 sMRI、dMRI、fMRI 三张小图，使用真实 PyG `DataLoader` 批处理，输出解析配置、provenance 和 smoke 报告。 | 默认 3 张图、12 个节点、18 条边、3 维特征；不联网、不下载、不训练。 |
-| 测试 | 单元测试覆盖配置、契约、硬件、哈希、路径、provenance、smoke 和验收器；集成测试以真实子进程检查成功、确定性复跑与 CUDA 拒绝。 | 146 个单元测试和 3 个集成测试通过；全量 149 个测试通过，覆盖率 89.52%。 |
+| 测试 | 单元测试覆盖配置、契约、硬件、哈希、路径、provenance、smoke 和验收器；集成测试以真实子进程检查成功、确定性复跑与 CUDA 拒绝。 | 147 个单元测试和 3 个集成测试通过；全量 150 个测试通过，覆盖率 89.59%。 |
 | 代码质量 | Ruff 执行规则检查和格式检查，mypy 对 `src/canospar` 使用严格模式，pytest 分支覆盖率门槛为 80%，另有硬编码路径扫描器。 | 本报告不以局部历史输出替代最终全量验收。 |
 | pre-commit | 固定正式版本的通用检查与 Ruff 钩子，并复用项目环境执行 mypy、单元测试和路径扫描。 | 启用大文件、私钥、冲突、JSON、TOML、YAML、尾随空白等检查。 |
 | GitHub Actions | Ubuntu 与 Python 3.11 作业先安装官方中央处理器版 PyTorch，再安装项目依赖，依次执行质量、测试、smoke、预提交、Snakemake、总验收和构建。 | 权限仅为 `contents: read`；发布前快照没有远程运行证据，首次推送后的状态应在 GitHub Actions 中核对。 |
@@ -194,7 +194,7 @@ Anaconda 安装位置在所有说明中统一写作 `<ANACONDA_ROOT>`。
 | `ruff check src tests` | 0 | 规则检查通过。 |
 | `ruff format --check src tests` | 0 | 25 个文件已格式化。 |
 | `mypy src/canospar` | 0 | 15 个源文件未发现问题。 |
-| `pytest -q tests/unit` | 0 | 146 通过、0 失败、0 跳过；另有 2 条第三方弃用警告。 |
+| `pytest -q tests/unit` | 0 | 147 通过、0 失败、0 跳过；另有 2 条第三方弃用警告。 |
 | `pytest -q tests/integration` | 0 | 3 通过、0 失败、0 跳过。 |
 | `python -m canospar.utils.smoke_test` | 0 | `success`、中央处理器、3 张图、12 个节点、18 条边、3 维特征；配置哈希为 `09613f9612367cd29e209b389443b7c50f355967958ff9a287743d8052d94e44`。 |
 | `pre-commit install` | 0 | 钩子安装成功。 |
@@ -202,7 +202,7 @@ Anaconda 安装位置在所有说明中统一写作 `<ANACONDA_ROOT>`。
 | `snakemake -n -s workflow/Snakefile` | 0 | 仅包含 `all` 与 `smoke_test`；现有产物已是最新。 |
 | `snakemake --cores 1 -s workflow/Snakefile` | 0 | 实际工作流执行成功。 |
 | `python scripts/verify_week1.py` | 0 | 17 `PASS`、0 `FAIL`、0 `SKIP_WITH_REASON`；其中覆盖率检查强制 `--cov-fail-under=80`。 |
-| `python -m pytest -q --cov=canospar --cov-report=term-missing --cov-fail-under=80 tests` | 0 | 149 个测试通过；总覆盖率 89.52%，达到 80% 门槛。 |
+| `python -m pytest -q --cov=canospar --cov-report=term-missing --cov-fail-under=80 tests` | 0 | 150 个测试通过；总覆盖率 89.59%，达到 80% 门槛。 |
 | `python -m build` | 0 | 成功生成源码分发包和 wheel，且无警告。 |
 | `conda env create --dry-run --prefix "<TEMP_ENV_PREFIX>" --file environment.lock.yml` | 0 | win-64 锁文件 dry-run 成功。 |
 | `git check-ignore` 分别检查 `artifacts/`、受限数据、`.env` 和 `.snakemake/` | 0 | 四类路径均被正确忽略。 |
@@ -215,9 +215,9 @@ Anaconda 安装位置在所有说明中统一写作 `<ANACONDA_ROOT>`。
 
 | 项目 | 最终结果 | 退出码 | 计数或覆盖率 |
 | --- | --- | ---: | --- |
-| 单元测试 | 通过 | 0 | 146 通过、0 失败、0 跳过；2 条第三方 `DeprecationWarning`。 |
+| 单元测试 | 通过 | 0 | 147 通过、0 失败、0 跳过；2 条第三方 `DeprecationWarning`。 |
 | 集成测试 | 通过 | 0 | 3 通过、0 失败、0 跳过。 |
-| 全量覆盖率 | 通过 | 0 | 149 通过；89.52%，高于 80% 门槛。 |
+| 全量覆盖率 | 通过 | 0 | 150 通过；89.59%，高于 80% 门槛。 |
 | 17 项统一验收矩阵 | 通过 | 0 | 17 `PASS`、0 `FAIL`、0 `SKIP_WITH_REASON`；覆盖率属于必需检查。 |
 | smoke 产物一致性 | 通过 | 0 | 解析配置、provenance 与 smoke 报告共享配置哈希 `09613f9612367cd29e209b389443b7c50f355967958ff9a287743d8052d94e44`。 |
 | Snakemake dry-run | 通过 | 0 | 仅 `all` 与 `smoke_test`，当前产物已是最新。 |

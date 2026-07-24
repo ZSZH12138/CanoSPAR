@@ -142,6 +142,15 @@ def test_windows_memory_collector_returns_nulls_when_os_query_fails(
     assert hardware_gate._memory_gib() == (None, None)
 
 
+def test_windows_memory_collector_returns_nulls_when_windll_is_unavailable(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    monkeypatch.setattr(hardware_gate.platform, "system", lambda: "Windows")
+    monkeypatch.delattr(hardware_gate.ctypes, "windll", raising=False)
+
+    assert hardware_gate._memory_gib() == (None, None)
+
+
 def test_gpu_detector_handles_an_absent_utility(
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:

@@ -47,7 +47,10 @@ def _memory_gib() -> tuple[float | None, float | None]:
 
         status = MemoryStatus()
         status.length = ctypes.sizeof(MemoryStatus)
-        if ctypes.windll.kernel32.GlobalMemoryStatusEx(ctypes.byref(status)) == 0:
+        windows_api = getattr(ctypes, "windll", None)
+        if windows_api is None:
+            return None, None
+        if windows_api.kernel32.GlobalMemoryStatusEx(ctypes.byref(status)) == 0:
             return None, None
         return status.total_physical / _GIB, status.available_physical / _GIB
 
