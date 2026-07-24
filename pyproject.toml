@@ -1,0 +1,88 @@
+[build-system]
+requires = ["setuptools>=77"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "canospar"
+version = "0.1.0"
+description = "CPU-only Week 1 research infrastructure for CanoSPAR."
+readme = "README.md"
+requires-python = ">=3.11,<3.12"
+license-files = ["LICENSE"]
+authors = [{ name = "CanoSPAR contributors" }]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.11",
+    "Operating System :: OS Independent",
+]
+dependencies = [
+    "hydra-core>=1.3,<1.4",
+    "numpy>=1.26,<3",
+    "omegaconf>=2.3,<2.4",
+    "PyYAML>=6,<7",
+    "torch>=2.5,<3",
+    "torch-geometric>=2.6,<3",
+]
+
+[project.optional-dependencies]
+core = [
+    "hydra-core>=1.3,<1.4",
+    "numpy>=1.26,<3",
+    "omegaconf>=2.3,<2.4",
+    "PyYAML>=6,<7",
+    "torch>=2.5,<3",
+    "torch-geometric>=2.6,<3",
+]
+research = [
+    "entmax>=1.3",
+    "psutil>=6,<8",
+    "scikit-learn>=1.5,<2",
+    "scipy>=1.13,<2",
+    "tensorboard>=2.18,<3",
+]
+workflow = ["snakemake>=8,<10"]
+dev = [
+    "build>=1.2,<2",
+    "mypy>=1.13,<2",
+    "pre-commit>=4,<5",
+    "pytest>=8.3,<9",
+    "pytest-cov>=6,<7",
+    "ruff>=0.8,<1",
+    "types-PyYAML>=6.0.12",
+]
+all = ["canospar[core,research,workflow,dev]"]
+
+[tool.setuptools]
+package-dir = { "" = "src" }
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+addopts = "-ra"
+testpaths = ["tests"]
+
+[tool.coverage.run]
+branch = true
+source = ["canospar"]
+
+[tool.coverage.report]
+fail_under = 80
+show_missing = true
+
+[tool.ruff]
+target-version = "py311"
+line-length = 100
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B"]
+
+[tool.mypy]
+python_version = "3.11"
+files = ["src/canospar"]
+strict = true
+warn_unused_ignores = true
+
+[[tool.mypy.overrides]]
+module = ["torch_geometric.*"]
+ignore_missing_imports = true

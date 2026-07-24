@@ -1,0 +1,14 @@
+Bootstrap: docker
+# Week 1 placeholder: before any future build, replace this mutable reference
+# with the verified immutable digest recorded in containers/versions.md.
+From: python:3.11.11-slim-bookworm
+
+%labels
+    org.opencontainers.image.title CanoSPAR
+    org.opencontainers.image.description Week 1 declaration only; no image is built by this repository.
+
+%environment
+    export PYTHONUNBUFFERED=1
+
+%runscript
+    exec python "$@"

@@ -1,0 +1,41 @@
+default_language_version:
+  python: python3.11
+
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v5.0.0
+    hooks:
+      - id: check-added-large-files
+        args: [--maxkb=5120]
+      - id: check-ast
+      - id: check-merge-conflict
+      - id: check-json
+      - id: check-toml
+      - id: check-yaml
+      - id: detect-private-key
+      - id: end-of-file-fixer
+      - id: trailing-whitespace
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.9.10
+    hooks:
+      - id: ruff
+        args: [--fix]
+      - id: ruff-format
+  # These system hooks intentionally reuse the pinned project environment.
+  - repo: local
+    hooks:
+      - id: mypy
+        name: mypy
+        entry: python -m mypy src/canospar
+        language: system
+        pass_filenames: false
+      - id: pytest-unit
+        name: pytest unit tests
+        entry: python -m pytest tests/unit
+        language: system
+        pass_filenames: false
+      - id: no-hardcoded-paths
+        name: reject hard-coded user paths
+        entry: python scripts/check_no_hardcoded_paths.py
+        language: system
+        pass_filenames: false

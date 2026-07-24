@@ -1,0 +1,44 @@
+# Generated experiment artifacts and restricted data
+artifacts/**
+data/**
+raw/**
+derivatives/**
+bids/**
+hcp/**
+ppmi/**
+
+# Neuroimaging, model, and run outputs
+*.nii
+*.nii.gz
+*.mgz
+*.mgh
+*.trk
+*.tck
+*.h5
+*.pt
+*.pth
+*.ckpt
+mlruns/**
+runs/**
+.hydra/**
+
+# Python tooling and environments
+/.superpowers/
+/docs/superpowers/
+__pycache__/**
+*.py[cod]
+.pytest_cache/**
+.mypy_cache/**
+.ruff_cache/**
+.snakemake/**
+.coverage
+htmlcov/**
+.venv/**
+.env
+.env.*
+!.env.example
+
+# Build artifacts
+build/**
+dist/**
+*.egg-info/

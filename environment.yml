@@ -1,0 +1,14 @@
+name: canospar-week1
+channels:
+  - defaults
+dependencies:
+  - python=3.11
+  - pip
+  - pip:
+      # Keep PyPI available for general dependencies, but resolve PyTorch from
+      # the official CPU-only wheel index before installing project extras.
+      - --extra-index-url https://download.pytorch.org/whl/cpu
+      - --only-binary=torch,torch-geometric
+      - torch==2.12.1+cpu
+      - -e .[dev,research,workflow]
+# The exact +cpu local version prevents installation of a CUDA torch wheel.

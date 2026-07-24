@@ -1,0 +1,10 @@
+"""Minimal Week 1 workflow: generate only smoke-test evidence."""
+
+rule all:
+    input:
+        "artifacts/smoke/resolved_config.yaml",
+        "artifacts/smoke/provenance.json",
+        "artifacts/smoke/smoke_report.json",
+
+
+include: "rules/smoke.smk"

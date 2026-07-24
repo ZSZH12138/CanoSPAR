@@ -1,0 +1,129 @@
+{
+  "checks": [
+    {
+      "name": "python_version",
+      "reason": null,
+      "required": true,
+      "returncode": 0,
+      "status": "PASS"
+    },
+    {
+      "name": "repository_structure",
+      "reason": null,
+      "required": true,
+      "returncode": 0,
+      "status": "PASS"
+    },
+    {
+      "name": "cpu_torch",
+      "reason": null,
+      "required": true,
+      "returncode": 0,
+      "status": "PASS"
+    },
+    {
+      "name": "core_imports",
+      "reason": null,
+      "required": true,
+      "returncode": 0,
+      "status": "PASS"
+    },
+    {
+      "name": "hydra_config",
+      "reason": null,
+      "required": true,
+      "returncode": 0,
+      "status": "PASS"
+    },
+    {
+      "name": "data_contracts",
+      "reason": null,
+      "required": true,
+      "returncode": 0,
+      "status": "PASS"
+    },
+    {
+      "name": "smoke_execution",
+      "reason": null,
+      "required": true,
+      "returncode": 0,
+      "status": "PASS"
+    },
+    {
+      "name": "smoke_artifacts",
+      "reason": null,
+      "required": true,
+      "returncode": 0,
+      "status": "PASS"
+    },
+    {
+      "name": "provenance",
+      "reason": null,
+      "required": true,
+      "returncode": 0,
+      "status": "PASS"
+    },
+    {
+      "name": "git_ignore",
+      "reason": null,
+      "required": true,
+      "returncode": 0,
+      "status": "PASS"
+    },
+    {
+      "name": "hardcoded_path_scan",
+      "reason": null,
+      "required": true,
+      "returncode": 0,
+      "status": "PASS"
+    },
+    {
+      "name": "ruff",
+      "reason": null,
+      "required": true,
+      "returncode": 0,
+      "status": "PASS"
+    },
+    {
+      "name": "mypy",
+      "reason": null,
+      "required": true,
+      "returncode": 0,
+      "status": "PASS"
+    },
+    {
+      "name": "unit_tests",
+      "reason": null,
+      "required": true,
+      "returncode": 0,
+      "status": "PASS"
+    },
+    {
+      "name": "integration_tests",
+      "reason": null,
+      "required": true,
+      "returncode": 0,
+      "status": "PASS"
+    },
+    {
+      "name": "coverage",
+      "reason": null,
+      "required": true,
+      "returncode": 0,
+      "status": "PASS"
+    },
+    {
+      "name": "snakemake_dry_run",
+      "reason": null,
+      "required": true,
+      "returncode": 0,
+      "status": "PASS"
+    }
+  ],
+  "overall_status": "PASS",
+  "summary": {
+    "FAIL": 0,
+    "PASS": 17,
+    "SKIP_WITH_REASON": 0
+  }
+}

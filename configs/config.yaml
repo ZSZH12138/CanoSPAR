@@ -1,0 +1,19 @@
+defaults:
+  - data: toy
+  - graph: toy
+  - model: smoke
+  - experiment: smoke
+  - paths: local.example
+  - _self_
+
+device: cpu
+contract_version: "1.0.0"
+random_seed: 7
+logging:
+  level: info
+  save_resolved_config: true
+
+hydra:
+  job:
+    chdir: false
+  output_subdir: null

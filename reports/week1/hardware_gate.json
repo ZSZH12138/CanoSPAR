@@ -1,0 +1,28 @@
+{
+  "checked_at_utc": "2026-07-23T17:47:14.7855197Z",
+  "operating_system": "Microsoft Windows 11 Education, 64-bit",
+  "architecture": "64-bit",
+  "python_version": "3.13.9 (Conda base; project Python 3.11 environment not yet created at measurement time)",
+  "cpu_physical_cores": 6,
+  "cpu_logical_cores": 12,
+  "total_ram_gib": 15.75,
+  "available_ram_gib": 0.88,
+  "available_ram_gib_samples": [1.95, 1.11, 0.96, 0.88],
+  "free_disk_gib": 183.74,
+  "gpu_detected": true,
+  "cuda_available": false,
+  "git_available": true,
+  "conda_or_venv_available": true,
+  "docker_available": true,
+  "apptainer_available": false,
+  "gate_passed": false,
+  "effective_gate_passed": true,
+  "waived_checks": ["available_ram_gib"],
+  "user_override": {
+    "date": "2026-07-24",
+    "note": "The user explicitly waived the 6 GiB available-RAM requirement for this Week 1 implementation. The original measurements remain unchanged."
+  },
+  "blocking_reasons": [
+    "Measured available RAM was below the mandatory 6 GiB threshold; latest value was 0.88 GiB. This historical gate result is waived by the 2026-07-24 user override."
+  ]
+}
