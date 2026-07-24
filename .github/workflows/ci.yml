@@ -31,10 +31,10 @@ jobs:
         run: ruff format --check src tests
       - name: Type check
         run: mypy src/canospar
-      - name: Run tests
-        run: |
-          pytest -q tests/unit
-          pytest -q tests/integration
+      - name: Unit tests
+        run: pytest -q tests/unit
+      - name: Integration tests
+        run: pytest -q tests/integration
       - name: Run smoke, workflow, and coverage acceptance
         run: |
           python -m canospar.utils.smoke_test
