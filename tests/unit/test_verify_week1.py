@@ -68,6 +68,11 @@ def test_check_specs_have_the_required_order_and_module_invocations() -> None:
         verify_week1._REPORT_PATH.relative_to(verify_week1._PROJECT_ROOT).as_posix()
         == "reports/week1/verification_results.json"
     )
+    ci_workflow = (
+        Path(__file__).resolve().parents[2] / ".github" / "workflows" / "ci.yml"
+    ).read_text(encoding="utf-8")
+    assert 'output="$(python -m pytest -q tests/unit 2>&1)"' in ci_workflow
+    assert "run: python -m pytest -q tests/integration" in ci_workflow
 
 
 def test_successful_verification_runs_all_checks_and_always_writes_report(

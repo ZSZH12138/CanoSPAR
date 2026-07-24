@@ -35,7 +35,7 @@ jobs:
         shell: bash
         run: |
           set +e
-          output="$(pytest -q tests/unit 2>&1)"
+          output="$(python -m pytest -q tests/unit 2>&1)"
           status=$?
           printf '%s\n' "$output"
           if ((status != 0)); then
@@ -47,7 +47,7 @@ jobs:
           fi
           exit "$status"
       - name: Integration tests
-        run: pytest -q tests/integration
+        run: python -m pytest -q tests/integration
       - name: Run smoke, workflow, and coverage acceptance
         run: |
           python -m canospar.utils.smoke_test
