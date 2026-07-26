@@ -24,6 +24,7 @@ runs/**
 
 # Python tooling and environments
 /.superpowers/
+/.worktrees/
 /docs/superpowers/
 __pycache__/**
 *.py[cod]
