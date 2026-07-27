@@ -1,0 +1,3 @@
+PATNO,COHORT,COHORT_DEFINITION,ENROLL_STATUS
+PPMI_SYN_0001,PD,Parkinson Disease,active
+PPMI_SYN_0002,HC,Healthy Control,active

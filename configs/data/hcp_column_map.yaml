@@ -1,0 +1,14 @@
+subject_id: Subject
+age: Age_in_Yrs
+t1_count: T1_Count
+fmri_count: 3T_RS-fMRI_Count
+dwi_complete: 3T_dMRI_Compl
+full_mr_complete: 3T_Full_MR_Compl
+qc_issue: QC_Issue
+fluid_cognition_target: CogFluidComp_Unadj
+total_cognition_target: CogTotalComp_Unadj
+matrix_reasoning_target: PMAT24_A_CR
+release: Release
+acquisition: Acquisition
+dictionary_field: columnHeader
+dictionary_definition: description

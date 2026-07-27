@@ -1,0 +1,17 @@
+subject_id: PATNO
+visit: EVENT_ID
+record_id: REC_ID
+form_date: INFODT
+participant_status: ENROLL_STATUS
+cohort: COHORT
+cohort_definition: COHORT_DEFINITION
+sequence_description: Description
+scan_date: Study Date
+protocol: Imaging Protocol
+manufacturer: Manufacturer
+scanner_model: Scanner Model
+inventory_subject_id: Subject ID
+inventory_visit: Visit
+inventory_description: Description
+inventory_study_date: Study Date
+inventory_protocol: Imaging Protocol

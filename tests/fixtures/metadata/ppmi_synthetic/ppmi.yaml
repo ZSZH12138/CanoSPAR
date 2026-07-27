@@ -1,0 +1,77 @@
+contract_version: "1.1.0"
+cohort: ppmi
+column_map: ppmi_column_map.yaml
+aliases_file: ppmi_sequence_aliases.yaml
+visit_map: ppmi_visit_map.yaml
+target_config: ppmi_targets.yaml
+required_alias_groups: [smri, fmri, dwi, exclude]
+availability_snapshot_date: "2026-07-25"
+source_release: ppmi-synthetic-current
+access: approved
+logical_inputs:
+  data_dictionary:
+    patterns: ["dictionary.csv"]
+    selection: exact
+    required_columns: [MOD_NAME, ITM_NAME, PAG_NAME, ITM_TYPE]
+  code_list:
+    patterns: ["code_list.csv"]
+    selection: exact
+    required_columns: [ITM_NAME, CODE, DECODE]
+  participant_status:
+    patterns: ["participant_status.csv"]
+    selection: exact
+    column_signature: [subject_id, cohort, cohort_definition, participant_status]
+  demographics:
+    patterns: ["demographics.csv"]
+    selection: exact
+    column_signature: [subject_id, visit, record_id, form_date]
+  mds_updrs_part_i_patient:
+    patterns: ["mds_updrs_part_i_patient.csv"]
+    selection: exact
+    column_signature: [subject_id, visit, record_id, form_date]
+  mds_updrs_part_i_clinician:
+    patterns: ["mds_updrs_part_i_clinician.csv"]
+    selection: exact
+    column_signature: [subject_id, visit, record_id, form_date]
+  mds_updrs_part_ii_patient:
+    patterns: ["mds_updrs_part_ii_patient.csv"]
+    selection: exact
+    column_signature: [subject_id, visit, record_id, form_date]
+  mds_updrs_part_iii_motor:
+    patterns: ["mds_updrs_part_iii_motor.csv"]
+    selection: exact
+    column_signature: [subject_id, visit, record_id, form_date]
+  mri_completion:
+    patterns: ["mri_completion_current.csv"]
+    selection: exact
+    column_signature: [subject_id, visit, record_id, form_date]
+  archived_mri:
+    patterns: ["mri_completion_archived.csv"]
+    selection: exact
+    required_columns: [REC_ID]
+  xing_mri_acquisition:
+    patterns: ["xing_mri_acquisition.csv"]
+    selection: exact
+    column_signature: [subject_id, visit]
+  t1_inventory:
+    patterns: ["t1_inventory.csv"]
+    selection: exact
+    column_signature:
+      [inventory_subject_id, inventory_visit, inventory_study_date,
+       inventory_description, inventory_protocol]
+  rsfmri_inventory:
+    patterns: ["rsfmri_inventory.csv"]
+    selection: exact
+    column_signature:
+      [inventory_subject_id, inventory_visit, inventory_study_date,
+       inventory_description, inventory_protocol]
+  dti_inventory:
+    patterns: ["dti_inventory.csv"]
+    selection: exact
+    column_signature:
+      [inventory_subject_id, inventory_visit, inventory_study_date,
+       inventory_description, inventory_protocol]
+manifest_defaults:
+  cohort_source: not_applicable
+  unrelated_list_version: not_applicable
+  kinship_control_method: not_applicable

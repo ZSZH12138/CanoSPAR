@@ -1,0 +1,25 @@
+{
+  "outcome": "OK",
+  "issues": [],
+  "data_governance": {
+    "metadata_root_present": true,
+    "metadata_git_ignored": true,
+    "private_metadata_tracked_count": 0,
+    "private_metadata_staged_count": 0,
+    "private_metadata_history_count": 0,
+    "credential_indicator": false
+  },
+  "compute": {
+    "cpu_count": 12,
+    "input_size_bytes": 43719269,
+    "file_types": [".csv", ".json", ".md", ".pdf"],
+    "imaging_volumes_absent": true,
+    "gpu_work_authorized": false,
+    "mri_work_authorized": false
+  },
+  "memory_gate": {
+    "status": "waived_by_user",
+    "available_gib_at_preflight": 3.08,
+    "does_not_authorize": ["MRI", "GPU"]
+  }
+}

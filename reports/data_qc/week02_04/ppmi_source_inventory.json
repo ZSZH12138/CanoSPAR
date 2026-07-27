@@ -1,0 +1,28 @@
+{
+  "snapshot_date": "2026-07-25",
+  "path_policy": "private relative paths and basenames redacted",
+  "selection_policy": "source-manifest and current guidance driven; archived tables remain archive-only",
+  "sources": [
+    {"logical_name":"path_map","relative_location":"ppmi_metadata/records/[redacted]","size_bytes":1274,"sha256":"4fdec5ff614380ff651b904201fcbf06a122abac8a2ca50a8acaac2af6fcf68b","status":"current"},
+    {"logical_name":"source_manifest","relative_location":"ppmi_metadata/records/[redacted]","size_bytes":14273,"sha256":"3aba5fd72f03e37be514a7822ac28a92548e1168a6961ca3b8cf519a14004507","status":"current"},
+    {"logical_name":"data_dictionary","relative_location":"ppmi_metadata/guidance/current/[redacted]","size_bytes":967069,"sha256":"9d8dbd6108f7983a2a65e22dd8b5e7f174480d12dc3a1a086fd8672af0dfa547","status":"current"},
+    {"logical_name":"code_list","relative_location":"ppmi_metadata/guidance/current/[redacted]","size_bytes":555147,"sha256":"763ec881ef8a50bb60ace0088528c4ceb36782c09e75a1cfdb5372b264ad6cb9","status":"current"},
+    {"logical_name":"participant_status","relative_location":"ppmi_metadata/participants/[redacted]","size_bytes":1584637,"sha256":"839f0a13dd88c0a79641c6ec0f6905aadc0d06e2e3caa7324206725c7fc4efe4","status":"current"},
+    {"logical_name":"demographics","relative_location":"ppmi_metadata/participants/[redacted]","size_bytes":1484246,"sha256":"17a4a98d96b7dc8a7db2ac4743aa7b89fb74a9531eef3cf8aaccc7ab8d1ce1f1","status":"current"},
+    {"logical_name":"mds_updrs_part_i_patient","relative_location":"ppmi_metadata/clinical/mds_updrs/[redacted]","size_bytes":4317367,"sha256":"642e7a7617b9d1f3cc2d26269aa97c55229b120f3fb9e6b714f8e5c897508774","status":"current"},
+    {"logical_name":"mds_updrs_part_i_clinician","relative_location":"ppmi_metadata/clinical/mds_updrs/[redacted]","size_bytes":3609838,"sha256":"f036cf2a4c03405866a884f67851090cc0f492915a00659e68c0cc31bd03043a","status":"current"},
+    {"logical_name":"mds_updrs_part_ii_patient","relative_location":"ppmi_metadata/clinical/mds_updrs/[redacted]","size_bytes":5214257,"sha256":"2498ca5b83c6e392c88e88eb7163c249df8a9484620533fb084f4fd27d62e61c","status":"current"},
+    {"logical_name":"mds_updrs_part_iii_motor","relative_location":"ppmi_metadata/clinical/mds_updrs/[redacted]","size_bytes":12350175,"sha256":"c319ce8435020b3ed5754c5d8e9bc40568b039318cd5620ed0e4e94339cbd206","status":"current"},
+    {"logical_name":"mri_completion","relative_location":"ppmi_metadata/imaging_metadata/forms/[redacted]","size_bytes":1159969,"sha256":"60820c63586296ddbe42f6e6881dfe631c45f97ace7390b4bfe4f5c765239d8b","status":"current"},
+    {"logical_name":"archived_mri","relative_location":"ppmi_metadata/imaging_metadata/forms/[redacted]","size_bytes":329854,"sha256":"25ab047ac4802315b9e874aa9249a9787bf324bb4b3a5ffa22113ce24ef54051","status":"archive_left_join_only"},
+    {"logical_name":"xing_mri_acquisition","relative_location":"ppmi_metadata/imaging_metadata/forms/[redacted]","size_bytes":497608,"sha256":"299d364400b3261bce1cf95aa3f106c6c1eefdc59475552dc7664d12923604a6","status":"current"},
+    {"logical_name":"t1_inventory","relative_location":"ppmi_metadata/imaging_metadata/inventories/[redacted]","size_bytes":610152,"sha256":"de89b629ff272a8a2419ac52c1c443e9b2b28795e3be339b1b93f55c8b2a76d5","status":"current"},
+    {"logical_name":"rsfmri_inventory","relative_location":"ppmi_metadata/imaging_metadata/inventories/[redacted]","size_bytes":787443,"sha256":"73332fbb844f771844ca5cb39f43cda2e6fc63bebfc9312305f3b19252db7ead","status":"current"},
+    {"logical_name":"dti_inventory","relative_location":"ppmi_metadata/imaging_metadata/inventories/[redacted]","size_bytes":2082508,"sha256":"459fae1526e3c0d38a76c990c93abf3738da03c5acca899005e484a70ceb1538","status":"current"},
+    {"logical_name":"archived_data_dictionary","relative_location":"[aggregate-only]","file_count":1,"content_hash":"21e4c97d6a461567b0021da46cfd25a7a65c12b7504690928333ef551b136c87","status":"archive_only"}
+  ],
+  "ambiguities": [
+    "Site metadata is unavailable; scanner manufacturer is not used as site.",
+    "Clinical dates are month-only, so exact imaging-clinical day intervals are unavailable."
+  ]
+}

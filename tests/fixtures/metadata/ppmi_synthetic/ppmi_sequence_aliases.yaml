@@ -1,0 +1,8 @@
+smri: [3d t1, mprage, mp-rage, ir-fspgr, spgr, t1]
+fmri: [rsfmri_rl, rsfmri_lr, rsfmri_pa, rsfmri_ap, ep2d_resting_state, ep2d_bold_rest, resting state]
+dwi: [dti, dwi, diffusion, dti_rl, dti_lr, b700, b1000, b2000, revb0]
+exclude: [localizer, scout, phantom]
+smri_exclude: [nm-mt, gre_mt, dti, dwi, rest, fmri, survey, t2, flair, field map]
+fmri_exclude: [nm-mt, gre_mt, dti, dwi, diffusion, localizer, scout, phantom, t1, t2, flair, survey, field map]
+dwi_exclude: [t1, t2, flair, rest, fmri, nm-mt, gre_mt, localizer, scout, phantom, survey, field map]
+reverse_phase_short_rules: [reverse phase, short, revpe, spin echo]

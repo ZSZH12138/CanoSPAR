@@ -1,0 +1,86 @@
+subject_id_column: PATNO
+visit_column: EVENT_ID
+date_column: INFODT
+change_direction: "followup_total - baseline_total"
+selection:
+  primary_target: candidate_A
+  target_definition: "MDS-UPDRS Part III follow-up score minus baseline score"
+  primary_policy: prefer_off
+  secondary_targets: [candidate_B]
+  sensitivity_policies: [unique_only, prefer_on]
+month_horizons:
+  baseline:
+    selector: code_list_event_id
+    event_id: BL
+  month12:
+    selector: code_list_month
+    month: 12
+    event_id_prefix: V
+  month24:
+    selector: code_list_month
+    month: 24
+    event_id_prefix: V
+  month48:
+    selector: code_list_month
+    month: 48
+    event_id_prefix: V
+tables:
+  part_i_clinician:
+    source: mds_updrs_part_i_clinician
+    dictionary_selector:
+      modules: [NUPDRS1]
+      pages: [NUPDRS1]
+      item_name_regex: "^NP1[A-Z]+$"
+      official_total_column: NP1RTOT
+      expected_item_count: 6
+  part_i_patient:
+    source: mds_updrs_part_i_patient
+    dictionary_selector:
+      modules: [NUPDRS1P]
+      pages: [NUPDRS1P2P]
+      item_name_regex: "^NP1[A-Z]+$"
+      official_total_column: NP1PTOT
+      expected_item_count: 7
+  part_ii:
+    source: mds_updrs_part_ii_patient
+    dictionary_selector:
+      modules: [NUPDRS2P]
+      pages: [NUPDRS1P2P]
+      item_name_regex: "^NP2[A-Z]+$"
+      official_total_column: NP2PTOT
+      expected_item_count: 13
+  part_iii:
+    source: mds_updrs_part_iii_motor
+    dictionary_selector:
+      modules: [NUPDRS3TRT]
+      pages: [NUPDRDOSE3]
+      item_name_regex: "^NP3[A-Z]+$"
+      official_total_column: NP3TOT
+      expected_item_count: 33
+candidates:
+  candidate_A:
+    parts: [part_iii]
+  candidate_B:
+    parts: [part_i_clinician, part_i_patient, part_ii, part_iii]
+part_iii_state:
+  primary_field: PDSTATE
+  fields:
+    PDSTATE:
+      off_values: ["OFF"]
+      on_values: ["ON"]
+    OFFEXAM:
+      off_values: ["1"]
+      on_values: []
+    ONEXAM:
+      off_values: []
+      on_values: ["1"]
+  audit_only_fields: [PDMEDYN, HRPOSTMED, DBSYN, HRDBSON, HRDBSOFF, ONOFFORDER]
+  policies:
+    unique_only: {enabled: true}
+    prefer_off: {enabled: true}
+    prefer_on: {enabled: true}
+  confirmed: true
+task_thresholds:
+  stress_test: 120
+  ready: 180
+target_confirmed: true

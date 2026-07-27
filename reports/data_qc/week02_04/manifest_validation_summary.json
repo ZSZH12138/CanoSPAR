@@ -1,0 +1,31 @@
+{
+  "status": "PASS",
+  "schema_contract_version": "1.1.0",
+  "datasets": {
+    "hcp": {
+      "status": "PASS",
+      "manifest_sha256": "0010d2c56eb31ccceafcb3b0ad532f5a89873d22d3f30f75d6107d7364208f3f",
+      "check_count": 14,
+      "failure_count": 0
+    },
+    "ppmi": {
+      "status": "PASS",
+      "manifest_sha256": "7f70adce0e0b826caf0da35ae3ecbbec5a42124cb4acf9081e51da6587ee9ab5",
+      "check_count": 14,
+      "failure_count": 0
+    }
+  },
+  "determinism": {
+    "hcp_rerun_byte_identical": true,
+    "ppmi_rerun_byte_identical": true
+  },
+  "source_integrity": {
+    "source_file_scope": "CSV/PDF/JSON",
+    "file_count": 1135,
+    "total_bytes": 43717086,
+    "composite_algorithm": "sha256(sorted(relative_path|byte_length|file_sha256\\n))",
+    "before_composite_sha256": "f94a3b4d1ddc339ce445cf4c5120a032b4086ac1b3f2975a9dc7766067033c62",
+    "after_composite_sha256": "f94a3b4d1ddc339ce445cf4c5120a032b4086ac1b3f2975a9dc7766067033c62",
+    "unchanged": true
+  }
+}

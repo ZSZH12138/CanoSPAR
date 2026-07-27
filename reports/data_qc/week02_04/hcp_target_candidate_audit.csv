@@ -1,0 +1,4 @@
+target,non_missing,unrelated_non_missing,provisional_trimodal_non_missing,missing_rate,outlier_count,role,status
+CogFluidComp_Unadj,1188,337,337,0.0149253731,0,primary,CONFIRMED
+CogTotalComp_Unadj,1187,337,337,0.0157545605,0,secondary,CONFIRMED
+PMAT24_A_CR,1197,338,338,0.0074626866,0,secondary,CONFIRMED

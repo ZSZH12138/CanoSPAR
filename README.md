@@ -1,8 +1,35 @@
 # CanoSPAR
 
-CanoSPAR is currently at the **Week 1 infrastructure stage**. This repository
-provides a reproducible, CPU-only foundation for later research work; it does
-**not** yet implement, train, or evaluate a CanoSPAR model.
+CanoSPAR has completed the **Week 2–4 metadata/M0 engineering stage**. The
+scientific target configuration is confirmed, and the repository provides a
+reproducible, CPU-only foundation plus deterministic HCP and PPMI metadata
+manifests. It does **not** yet implement, train, or evaluate a CanoSPAR model.
+
+## Week 2–4 metadata scope
+
+Week 2–4 adds:
+
+- privacy-preserving HCP and PPMI metadata discovery with current/archive rules;
+- one exact canonical manifest schema, deterministic builders, provenance,
+  exclusions, validators, and aggregate audits;
+- HCP official-unrelated provisional cohort and three open-access target
+  audits, with `CogFluidComp_Unadj` primary and without Restricted Access;
+- PPMI same-visit multimodal availability, conservative sequence
+  classification, scanner batches, MDS-UPDRS candidate branches, and a
+  24-month task gate using candidate A with `prefer_off` as primary; and
+- fixture workflows plus the authoritative `python scripts/verify_week2_4.py`
+  acceptance command.
+
+Real metadata remains ignored and private. Curated aggregate evidence is in
+`reports/data_qc/week02_04/`; private rerunnable manifests stay under ignored
+`artifacts/manifests/week02_04/private/`. Current engineering status is
+`PASS`. HCP uses regression with MAE; its secondary targets are
+`CogTotalComp_Unadj` and `PMAT24_A_CR`. PPMI candidate A is Part III
+follow-up minus baseline, with `prefer_off` primary; candidate B and
+`unique_only`/`prefer_on` remain secondary/sensitivity analyses. The primary
+24-month PPMI branch has 151 independent subjects and therefore recommends a
+shorter window. Clinical dates are month-only, so exact imaging-clinical day
+intervals are not reported.
 
 ## Week 1 scope
 

@@ -1,0 +1,21 @@
+{
+  "status": "READY_FOR_USER_SELECTED_TASK",
+  "basis_horizon": "24",
+  "primary_target": "candidate_A",
+  "target_definition": "MDS-UPDRS Part III follow-up score minus baseline score",
+  "primary_policy": "prefer_off",
+  "secondary_targets": ["candidate_B"],
+  "sensitivity_policies": ["unique_only", "prefer_on"],
+  "branches": {
+    "candidate_A": {
+      "unique_only": {"basis_horizon":"24","basis_independent_subject_count":179,"final_task_selected":true,"independent_subject_count":179,"recommendation":"SHORTER_WINDOW_RECOMMENDED","required_confirmations":[],"status":"READY_FOR_USER_SELECTED_TASK"},
+      "prefer_off": {"basis_horizon":"24","basis_independent_subject_count":151,"final_task_selected":true,"independent_subject_count":151,"recommendation":"SHORTER_WINDOW_RECOMMENDED","required_confirmations":[],"status":"READY_FOR_USER_SELECTED_TASK"},
+      "prefer_on": {"basis_horizon":"24","basis_independent_subject_count":154,"final_task_selected":true,"independent_subject_count":154,"recommendation":"SHORTER_WINDOW_RECOMMENDED","required_confirmations":[],"status":"READY_FOR_USER_SELECTED_TASK"}
+    },
+    "candidate_B": {
+      "unique_only": {"basis_horizon":"24","basis_independent_subject_count":177,"final_task_selected":true,"independent_subject_count":177,"recommendation":"SHORTER_WINDOW_RECOMMENDED","required_confirmations":[],"status":"READY_FOR_USER_SELECTED_TASK"},
+      "prefer_off": {"basis_horizon":"24","basis_independent_subject_count":149,"final_task_selected":true,"independent_subject_count":149,"recommendation":"SHORTER_WINDOW_RECOMMENDED","required_confirmations":[],"status":"READY_FOR_USER_SELECTED_TASK"},
+      "prefer_on": {"basis_horizon":"24","basis_independent_subject_count":153,"final_task_selected":true,"independent_subject_count":153,"recommendation":"SHORTER_WINDOW_RECOMMENDED","required_confirmations":[],"status":"READY_FOR_USER_SELECTED_TASK"}
+    }
+  }
+}

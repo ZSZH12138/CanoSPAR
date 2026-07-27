@@ -1,0 +1,54 @@
+contract_version: "1.1.0"
+row_fields:
+  dataset: {type: string, enum: [hcp, ppmi]}
+  source_release: {type: string}
+  subject_id: {type: string}
+  visit_id: {type: string}
+  group_id: {type: string}
+  family_id: {type: string, nullable: true, required_value: null}
+  site_id: {type: string}
+  site_available: {type: boolean}
+  site_source: {type: string}
+  scanner_vendor: {type: string, nullable: true}
+  scanner_model: {type: string, nullable: true}
+  field_strength: {type: number, nullable: true}
+  normalized_protocol: {type: string, nullable: true}
+  scanner_batch_id: {type: string, nullable: true}
+  age: {type: number, nullable: true}
+  sex: {type: string, nullable: true}
+  diagnosis: {type: string, nullable: true}
+  diagnosis_source: {type: string, nullable: true}
+  target: {type: number, nullable: true}
+  target_name: {type: string, nullable: true}
+  target_date: {type: iso_date, nullable: true}
+  imaging_date: {type: iso_date, nullable: true}
+  imaging_clinical_interval_days: {type: number, nullable: true}
+  t1_available: {type: boolean}
+  t1_downloaded: {type: boolean}
+  t1_preprocessed: {type: boolean}
+  t1_qc_pass: {type: boolean, nullable: true}
+  t1_path: {type: string}
+  fmri_available: {type: boolean}
+  fmri_downloaded: {type: boolean}
+  fmri_preprocessed: {type: boolean}
+  fmri_qc_pass: {type: boolean, nullable: true}
+  fmri_path: {type: string}
+  dwi_available: {type: boolean}
+  dwi_downloaded: {type: boolean}
+  dwi_preprocessed: {type: boolean}
+  dwi_qc_pass: {type: boolean, nullable: true}
+  dwi_path: {type: string}
+  raw_qc_status: {type: string, nullable: true}
+  exclusion_reason: {type: string, enum: [none, not_acquired, not_in_source_inventory, not_downloaded, download_failed, preprocessing_not_run, preprocessing_failed, qc_not_run, qc_failed, missing_target, missing_visit_mapping, ambiguous_sequence, ambiguous_exam_state, unknown, not_applicable]}
+  availability_basis: {type: string, enum: [acquisition_completion_fields, source_inventory]}
+  availability_snapshot_date: {type: iso_date}
+  cohort_status: {type: string, enum: [provisional, frozen]}
+  row_status: {type: string, enum: [provisional, included, excluded]}
+  source_manifest_hash: {type: sha256}
+  contract_version: {type: string, required_value: "1.1.0"}
+  cohort_source: {type: string, enum: [hcp_official_unrelated, not_applicable]}
+  unrelated_list_version: {type: string}
+  kinship_control_method: {type: string, enum: [official_unrelated_cohort, not_applicable]}
+rules:
+  hcp_restricted_access: not_approved
+  ppmi_hcp_specific_fields: [not_applicable, not_applicable, not_applicable]

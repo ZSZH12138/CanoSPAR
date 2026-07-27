@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import json
+import os
 import subprocess
 from datetime import UTC, datetime
 from pathlib import Path
@@ -15,6 +16,20 @@ from canospar.utils.provenance import (
     collect_provenance,
     write_provenance,
 )
+
+
+def _isolated_git_environment() -> dict[str, str]:
+    """Keep nested test repositories independent of an outer Git invocation."""
+    return {key: value for key, value in os.environ.items() if not key.startswith("GIT_")}
+
+
+def _run_nested_git(*args: str, cwd: Path) -> None:
+    subprocess.run(
+        ["git", *args],
+        cwd=cwd,
+        check=True,
+        env=_isolated_git_environment(),
+    )
 
 
 def test_collect_provenance_has_required_cpu_only_fields(tmp_path: Path) -> None:
@@ -173,8 +188,16 @@ def test_command_sanitizer_redacts_windows_and_posix_paths_without_losing_flag_s
     ) == ["runner", "<path>", "--token", "<redacted>", "<path>"]
 
 
-def test_real_git_repository_without_head_reports_dirty_worktree(tmp_path: Path) -> None:
-    subprocess.run(["git", "init", "--quiet"], cwd=tmp_path, check=True)
+def test_real_git_repository_without_head_reports_dirty_worktree(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    outer_index = tmp_path / "outer-index"
+    monkeypatch.setenv("GIT_INDEX_FILE", str(outer_index))
+    assert "GIT_INDEX_FILE" not in _isolated_git_environment()
+    _run_nested_git("init", "--quiet", cwd=tmp_path)
+    for key in tuple(os.environ):
+        if key.startswith("GIT_"):
+            monkeypatch.delenv(key)
     (tmp_path / "untracked.txt").write_text("dirty\n", encoding="utf-8")
 
     record = collect_provenance(

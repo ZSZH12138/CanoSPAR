@@ -8,3 +8,4 @@ rule all:
 
 
 include: "rules/smoke.smk"
+include: "rules/metadata.smk"

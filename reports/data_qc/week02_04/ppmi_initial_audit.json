@@ -1,0 +1,47 @@
+{
+  "status": "PASS",
+  "manifest_sha256": "7f70adce0e0b826caf0da35ae3ecbbec5a42124cb4acf9081e51da6587ee9ab5",
+  "summary": {
+    "distinct_subject_count": 6101,
+    "subject_visit_count": 12419,
+    "distinct_visit_count": 22,
+    "modality_available_counts": {"t1": 1830, "fmri": 862, "dwi": 1777},
+    "trimodal_subject_visit_count": 366,
+    "visit_mapping": {"mapped": 12419, "unknown": 0},
+    "enrollment_cohort_distribution": {
+      "Healthy Control": 522,
+      "Parkinson's Disease": 4104,
+      "Prodromal": 7668,
+      "SWEDD": 125
+    },
+    "scanner_vendor_distribution": {"ge": 488, "philips": 351, "siemens": 1760, "unknown": 9820},
+    "field_strength_available_count": 0,
+    "scanner_batch_available_count": 2627,
+    "site_id_unknown_count": 12419,
+    "site_metadata_status": "unavailable_in_current_ppmi_export",
+    "archive_join": {
+      "method": "left_join_on_record_id",
+      "matched_record_count": 2380,
+      "enriched_records": 444,
+      "archived_only_record_count": 1,
+      "duplicate_groups": 0,
+      "duplicate_rows": 0
+    },
+    "sequence_classification": {
+      "classified": 10123,
+      "excluded_contamination": 3,
+      "missing_description": 12437,
+      "unrecognized": 782
+    },
+    "clinical_date_precision": "month_year_only",
+    "imaging_clinical_interval_status": "UNAVAILABLE_MONTH_ONLY_CLINICAL_DATE",
+    "primary_target": "candidate_A",
+    "target_definition": "MDS-UPDRS Part III follow-up score minus baseline score",
+    "primary_policy": "prefer_off",
+    "secondary_targets": ["candidate_B"],
+    "sensitivity_policies": ["unique_only", "prefer_on"],
+    "target_status": "READY_FOR_USER_SELECTED_TASK"
+  },
+  "validation_failures": 0,
+  "rerun_byte_identical": true
+}

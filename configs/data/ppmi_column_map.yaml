@@ -1,0 +1,38 @@
+subject_id: PATNO
+visit: EVENT_ID
+record_id: REC_ID
+form_date: INFODT
+sex: SEX
+cohort: COHORT
+cohort_definition: COHORT_DEFINITION
+enroll_date: ENROLL_DATE
+enrollment_status: ENROLL_STATUS
+participant_status: ENROLL_STATUS
+status_date: STATUS_DATE
+current_page_name: PAG_NAME
+current_mri_complete: MRICMPLT
+current_dti: MRIWDTI
+current_rsfmri: MRIWRSS
+current_result: MRIRSLT
+archived_status: F_STATUS
+archived_mri_date: MRIDT
+archived_transfer: MRIXFRYN
+acquisition_protocol: PROTOCOL
+acquisition_scan_date: MRI_SCAN_DATE
+acquisition_dti: MRI_SEQ_DTI
+acquisition_rsfmri: MRI_SEQ_RS
+acquisition_t1: MRI_SEQ_T1_WEIGHTED
+acquisition_t2: MRI_SEQ_T2_WEIGHTED
+acquisition_nm_mt: MRI_SEQ_NM_MT
+acquisition_acceptable: MRI_IMAGE_ACCEPTABLE
+inventory_subject_id: Subject ID
+inventory_project: Project
+inventory_sex: Sex
+inventory_research_group: Research Group
+inventory_visit: Visit
+inventory_study_date: Study Date
+inventory_age: Age
+inventory_modality: Modality
+inventory_description: Description
+inventory_protocol: Imaging Protocol
+inventory_image_id: Image ID

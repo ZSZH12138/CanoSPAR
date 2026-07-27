@@ -1,0 +1,8 @@
+category,name,count,status
+modality,t1,2073,classified
+modality,fmri,1656,classified
+modality,dwi,6394,classified
+reason,classified,10123,included
+reason,excluded_contamination,3,excluded
+reason,missing_description,12437,not_classified
+reason,unrecognized,782,not_classified

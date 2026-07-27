@@ -1,0 +1,79 @@
+contract_version: "1.1.0"
+cohort: ppmi
+column_map: ppmi_column_map.yaml
+aliases_file: ppmi_sequence_aliases.yaml
+visit_map: ppmi_visit_map.yaml
+target_config: ppmi_targets.yaml
+required_alias_groups: [smri, fmri, dwi, exclude]
+access: approved
+logical_inputs:
+  path_map:
+    patterns: ["ppmi_metadata/records/ppmi_path_map.json"]
+    selection: exact
+    path_map_resolution:
+      base_directory: ppmi_metadata
+      source_manifest_logical_name: source_manifest
+      records_key: files
+      canonical_path_key: canonical_relative_path
+      sha256_key: sha256
+      snapshot_date_key: snapshot_date
+      allowed_metadata_keys: [ppmi_metadata_root_env]
+      allowed_unmapped_canonical_paths: ["records/ppmi_path_map.json"]
+      allowed_unmapped_records:
+        - logical_name: archived_data_dictionary
+          canonical_pattern: "guidance/archive/ppmi_data_dictionary_*.csv"
+          required_status: archive_only
+          required_role: "Historical dictionary retained only for compatibility comparison"
+      path_map_keys:
+        data_dictionary: current_data_dictionary
+        code_list: current_code_list
+        participant_status: participant_status
+        demographics: demographics
+        mds_updrs_part_i_patient: mds_updrs_part_i_patient
+        mds_updrs_part_i_clinician: mds_updrs_part_i_clinician
+        mds_updrs_part_ii_patient: mds_updrs_part_ii_patient
+        mds_updrs_part_iii_motor: mds_updrs_part_iii_motor
+        mri_completion: mri_completion_current
+        archived_mri: mri_completion_archived
+        xing_mri_acquisition: xing_mri_acquisition
+        t1_inventory: t1_inventory
+        rsfmri_inventory: rsfmri_inventory
+        dti_inventory: dti_inventory
+  source_manifest:
+    patterns: ["ppmi_metadata/records/ppmi_source_manifest.json"]
+    selection: exact
+    snapshot_date_key: snapshot_date
+  data_dictionary:
+    required_columns: [MOD_NAME, ITM_NAME, PAG_NAME, DSCR, ITM_TYPE]
+  code_list:
+    required_columns: [MOD_NAME, ITM_NAME, CODE, DECODE, MAPPING_NOTES]
+  archived_data_dictionary:
+    archive_only: true
+  participant_status:
+    column_signature: [subject_id, cohort, cohort_definition, enroll_date, enrollment_status, status_date]
+  demographics:
+    column_signature: [record_id, subject_id, visit, form_date, sex]
+  mds_updrs_part_i_patient:
+    column_signature: [record_id, subject_id, visit, form_date]
+  mds_updrs_part_i_clinician:
+    column_signature: [record_id, subject_id, visit, form_date]
+  mds_updrs_part_ii_patient:
+    column_signature: [record_id, subject_id, visit, form_date]
+  mds_updrs_part_iii_motor:
+    column_signature: [record_id, subject_id, visit, form_date]
+  mri_completion:
+    column_signature: [record_id, subject_id, visit, current_page_name, form_date, current_mri_complete, current_dti, current_rsfmri, current_result]
+  archived_mri:
+    column_signature: [record_id, subject_id, visit, archived_status, archived_mri_date, archived_transfer]
+  xing_mri_acquisition:
+    column_signature: [acquisition_protocol, subject_id, visit, acquisition_scan_date, acquisition_dti, acquisition_rsfmri, acquisition_t1, acquisition_acceptable]
+  t1_inventory:
+    column_signature: [inventory_subject_id, inventory_visit, inventory_study_date, inventory_modality, inventory_description, inventory_protocol]
+  rsfmri_inventory:
+    column_signature: [inventory_subject_id, inventory_visit, inventory_study_date, inventory_modality, inventory_description, inventory_protocol]
+  dti_inventory:
+    column_signature: [inventory_subject_id, inventory_visit, inventory_study_date, inventory_modality, inventory_description, inventory_protocol]
+manifest_defaults:
+  cohort_source: not_applicable
+  unrelated_list_version: not_applicable
+  kinship_control_method: not_applicable

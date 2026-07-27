@@ -1,0 +1,21 @@
+{
+  "status": "PASS",
+  "manifest_sha256": "0010d2c56eb31ccceafcb3b0ad532f5a89873d22d3f30f75d6107d7364208f3f",
+  "summary": {
+    "input_subject_count": 1206,
+    "official_unrelated_count": 339,
+    "manifest_subject_count": 339,
+    "trimodal_provisional_count": 339,
+    "qc_issue_count": 39,
+    "excluded_not_in_official_unrelated_whitelist": 867,
+    "cohort_status": "provisional",
+    "processed_package_inventory": "not_available",
+    "primary_target": "CogFluidComp_Unadj",
+    "secondary_targets": ["CogTotalComp_Unadj", "PMAT24_A_CR"],
+    "task_type": "regression",
+    "primary_metric": "MAE",
+    "target_status": "READY_FOR_USER_SELECTED_TASK"
+  },
+  "validation_failures": 0,
+  "rerun_byte_identical": true
+}

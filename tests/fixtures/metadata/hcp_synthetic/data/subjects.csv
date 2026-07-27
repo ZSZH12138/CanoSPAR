@@ -1,0 +1,4 @@
+Subject,Age_in_Yrs,T1_Count,3T_RS-fMRI_Count,3T_dMRI_Compl,3T_Full_MR_Compl,QC_Issue,Release,Acquisition,CogFluidComp_Unadj,CogTotalComp_Unadj,PMAT24_A_CR
+HCP_SYN_0001,22,1,1,true,true,soft_flag,2025,yes,100,110,20
+HCP_SYN_0002,24,1,0,true,false,,2025,yes,101,111,21
+HCP_SYN_0099,25,1,1,true,true,,2025,yes,102,112,22

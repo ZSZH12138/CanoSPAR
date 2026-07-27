@@ -1,0 +1,291 @@
+{
+  "checks": [
+    {
+      "command": [
+        "python",
+        "-m",
+        "snakemake",
+        "-s",
+        "workflow/Snakefile",
+        "metadata_fixture",
+        "--cores",
+        "1"
+      ],
+      "coverage_percent": null,
+      "diagnostic": null,
+      "duration_seconds": 8.101575,
+      "exit_code": 0,
+      "name": "fixture_pipeline",
+      "required": true,
+      "status": "PASS",
+      "test_counts": {
+        "failed": 0,
+        "passed": 0,
+        "skipped": 0
+      }
+    },
+    {
+      "command": [
+        "python",
+        "-m",
+        "pytest",
+        "-q",
+        "tests/integration/data/test_week2_4_pipeline.py"
+      ],
+      "coverage_percent": null,
+      "diagnostic": null,
+      "duration_seconds": 22.716784,
+      "exit_code": 0,
+      "name": "fixture_determinism",
+      "required": true,
+      "status": "PASS",
+      "test_counts": {
+        "failed": 0,
+        "passed": 5,
+        "skipped": 0
+      }
+    },
+    {
+      "command": [
+        "python",
+        "-m",
+        "pytest",
+        "-q",
+        "tests/unit/data/test_hcp_manifest.py",
+        "tests/unit/data/test_ppmi_manifest.py",
+        "tests/unit/data/test_ppmi_targets.py",
+        "tests/unit/data/test_task_gate.py",
+        "tests/unit/data/test_manifest_validation.py"
+      ],
+      "coverage_percent": null,
+      "diagnostic": null,
+      "duration_seconds": 7.023717,
+      "exit_code": 0,
+      "name": "dataset_contract_tests",
+      "required": true,
+      "status": "PASS",
+      "test_counts": {
+        "failed": 0,
+        "passed": 66,
+        "skipped": 0
+      }
+    },
+    {
+      "command": [
+        "python",
+        "-m",
+        "pytest",
+        "-q",
+        "tests/unit"
+      ],
+      "coverage_percent": null,
+      "diagnostic": null,
+      "duration_seconds": 23.494164,
+      "exit_code": 0,
+      "name": "unit_tests",
+      "required": true,
+      "status": "PASS",
+      "test_counts": {
+        "failed": 0,
+        "passed": 321,
+        "skipped": 0
+      }
+    },
+    {
+      "command": [
+        "python",
+        "-m",
+        "pytest",
+        "-q",
+        "tests/integration"
+      ],
+      "coverage_percent": null,
+      "diagnostic": null,
+      "duration_seconds": 57.022311,
+      "exit_code": 0,
+      "name": "integration_tests",
+      "required": true,
+      "status": "PASS",
+      "test_counts": {
+        "failed": 0,
+        "passed": 8,
+        "skipped": 0
+      }
+    },
+    {
+      "command": [
+        "python",
+        "-m",
+        "pytest",
+        "-q",
+        "--cov=canospar",
+        "--cov-report=term",
+        "--cov-fail-under=80",
+        "tests"
+      ],
+      "coverage_percent": 85.0,
+      "diagnostic": null,
+      "duration_seconds": 134.446707,
+      "exit_code": 0,
+      "name": "coverage",
+      "required": true,
+      "status": "PASS",
+      "test_counts": {
+        "failed": 0,
+        "passed": 329,
+        "skipped": 0
+      }
+    },
+    {
+      "command": [
+        "python",
+        "-m",
+        "ruff",
+        "check",
+        "src",
+        "tests",
+        "scripts"
+      ],
+      "coverage_percent": null,
+      "diagnostic": null,
+      "duration_seconds": 0.382898,
+      "exit_code": 0,
+      "name": "ruff",
+      "required": true,
+      "status": "PASS",
+      "test_counts": {
+        "failed": 0,
+        "passed": 0,
+        "skipped": 0
+      }
+    },
+    {
+      "command": [
+        "python",
+        "-m",
+        "ruff",
+        "format",
+        "--check",
+        "src",
+        "tests",
+        "scripts"
+      ],
+      "coverage_percent": null,
+      "diagnostic": null,
+      "duration_seconds": 0.144011,
+      "exit_code": 0,
+      "name": "ruff_format",
+      "required": true,
+      "status": "PASS",
+      "test_counts": {
+        "failed": 0,
+        "passed": 0,
+        "skipped": 0
+      }
+    },
+    {
+      "command": [
+        "python",
+        "-m",
+        "mypy",
+        "src/canospar"
+      ],
+      "coverage_percent": null,
+      "diagnostic": null,
+      "duration_seconds": 68.788387,
+      "exit_code": 0,
+      "name": "mypy",
+      "required": true,
+      "status": "PASS",
+      "test_counts": {
+        "failed": 0,
+        "passed": 0,
+        "skipped": 0
+      }
+    },
+    {
+      "command": [
+        "python",
+        "scripts/verify_week1.py"
+      ],
+      "coverage_percent": null,
+      "diagnostic": null,
+      "duration_seconds": 255.723123,
+      "exit_code": 0,
+      "name": "week1_acceptance",
+      "required": true,
+      "status": "PASS",
+      "test_counts": {
+        "failed": 0,
+        "passed": 0,
+        "skipped": 0
+      }
+    },
+    {
+      "command": [
+        "python",
+        "-m",
+        "snakemake",
+        "-n",
+        "-s",
+        "workflow/Snakefile"
+      ],
+      "coverage_percent": null,
+      "diagnostic": null,
+      "duration_seconds": 3.334692,
+      "exit_code": 0,
+      "name": "snakemake_dry_run",
+      "required": true,
+      "status": "PASS",
+      "test_counts": {
+        "failed": 0,
+        "passed": 0,
+        "skipped": 0
+      }
+    },
+    {
+      "command": [
+        "python",
+        "-m",
+        "build",
+        "--no-isolation"
+      ],
+      "coverage_percent": null,
+      "diagnostic": null,
+      "duration_seconds": 5.570367,
+      "exit_code": 0,
+      "name": "build",
+      "required": true,
+      "status": "PASS",
+      "test_counts": {
+        "failed": 0,
+        "passed": 0,
+        "skipped": 0
+      }
+    }
+  ],
+  "contract_version": "1.1.0",
+  "coverage_percent": 85.0,
+  "governance": {
+    "fixture_only": true,
+    "network_access": false,
+    "private_metadata_read": false,
+    "real_metadata_git_history_commit_count": 0,
+    "real_metadata_git_staged_count": 0,
+    "real_metadata_git_tracked_count": 0
+  },
+  "overall_status": "PASS",
+  "resources": {
+    "cpu_only": true,
+    "gpu_used": false,
+    "longest_step_seconds": 255.723123,
+    "peak_memory_mb": null,
+    "server_required": false,
+    "total_duration_seconds": 586.748736
+  },
+  "summary": {
+    "failed": 0,
+    "passed": 12,
+    "skipped": 0
+  }
+}

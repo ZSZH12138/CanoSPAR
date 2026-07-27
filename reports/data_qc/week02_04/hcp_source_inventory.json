@@ -1,0 +1,20 @@
+{
+  "snapshot_date": "2026-07-25",
+  "path_policy": "private relative paths and basenames redacted",
+  "selection_policy": "current declared source; archive never promoted",
+  "sources": [
+    {"logical_name":"access_record","relative_location":"hcp_metadata/records/[redacted]","size_bytes":681,"sha256":"f3e10d936f182d7860b58de9b6416460fffff6330f4c626503955999eacd414a","status":"current"},
+    {"logical_name":"appendix_2025","relative_location":"hcp_metadata/docs/[redacted]","size_bytes":1239283,"sha256":"67dbbd43feb66bdec36570b4d6d0d8060e12aff01198cb84cd7960edfa9e2bb6","status":"current"},
+    {"logical_name":"data_dictionary","relative_location":"hcp_metadata/raw/[redacted]","size_bytes":214541,"sha256":"bed4ebdcbd99ad31781b2d640683640afc84c340134f5e68a5dc98e7cabf8bae","status":"current"},
+    {"logical_name":"download_manifest","relative_location":"hcp_metadata/records/[redacted]","size_bytes":2852,"sha256":"007da75d0c13619d4c6550dc14493659ef3ad744c93ba597132de36bfb437746","status":"current"},
+    {"logical_name":"download_record","relative_location":"hcp_metadata/records/[redacted]","size_bytes":681,"sha256":"f3e10d936f182d7860b58de9b6416460fffff6330f4c626503955999eacd414a","status":"current"},
+    {"logical_name":"subject_export","relative_location":"hcp_metadata/raw/[redacted]","size_bytes":92785,"sha256":"fc4997b5f9f019587881b3a39d2af934dea0b880a3883418bd2743b0c1847920","status":"current"},
+    {"logical_name":"unrelated_list","relative_location":"hcp_metadata/raw/[redacted]","size_bytes":582140,"sha256":"27d524d2d2c98f3a0e1a6fa20f1623d65bc53048c46a67ab8bfae35885a614c5","status":"current"},
+    {"logical_name":"legacy_inventory","relative_location":"[aggregate-only]","file_count":1113,"content_hash":"253d6fc91d2bc928a2637c70557b52d36bf63ed5c3c169b92b53be9874121c41","status":"archive_only"},
+    {"logical_name":"historical_manifest_record","relative_location":"[aggregate-only]","file_count":1,"sha256":null,"status":"historical_only"}
+  ],
+  "ambiguities": [
+    "Completion metadata establishes acquisition completion, not processed-package inventory.",
+    "The cohort is provisional until processed-package availability is separately confirmed."
+  ]
+}

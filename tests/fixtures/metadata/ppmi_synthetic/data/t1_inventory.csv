@@ -1,0 +1,4 @@
+Subject ID,Visit,Study Date,Description,Imaging Protocol,Manufacturer,Scanner Model
+PPMI_SYN_0001,Baseline,2026-01-02,MPRAGE,Siemens Prisma 3T,SIEMENS,Prisma
+PPMI_SYN_0001,Month 12,2027-01-02,MPRAGE,Siemens Prisma 3T,SIEMENS,Prisma
+PPMI_SYN_0002,Baseline,2026-01-03,3D T1,GE Discovery 3T,GE,Discovery
