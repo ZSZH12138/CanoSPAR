@@ -1,9 +1,9 @@
 {
   "architecture_contract_version": "1.0.0",
   "overall_status": "PASS",
-  "pass_count": 14,
+  "pass_count": 15,
   "fail_count": 0,
-  "skip_count": 2,
+  "skip_count": 1,
   "checks": [
     {
       "id": "G00_REQUIRED_FILES",
@@ -63,7 +63,7 @@
     {
       "id": "G11_CONTRACT_TESTS_PASS",
       "status": "PASS",
-      "message": "43 passed, 3 warnings in 3.95s"
+      "message": "43 passed, 3 warnings in 3.93s"
     },
     {
       "id": "G12_NO_FAKE_SCIENTIFIC_IMPLEMENTATION",
@@ -82,8 +82,8 @@
     },
     {
       "id": "G15_FINAL_REPORT_COMPLETE",
-      "status": "SKIP",
-      "message": "final report is generated after implementation"
+      "status": "PASS",
+      "message": "final report present"
     }
   ]
 }
