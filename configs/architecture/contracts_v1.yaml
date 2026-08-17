@@ -1,0 +1,96 @@
+architecture_contract_version: "1.0.0"
+science_contract_version: "1.1.0"
+schema_version: "1.0.0"
+runtime_profile_version: "1.0.0"
+modules:
+  M0:
+    contract_version: "1.0.0"
+    implementation_status: EXISTING
+    upstream: []
+    input_artifacts: []
+    output_artifacts: [DatasetManifestArtifact, SplitRegistryArtifact, TaskDefinitionArtifact]
+    source_of_truth: cohort_task_split
+  P0:
+    contract_version: "1.0.0"
+    implementation_status: PARTIAL
+    upstream: [M0]
+    input_artifacts: [ImagingInputBundle]
+    output_artifacts: [ROIAlignedSample]
+    source_of_truth: roi_alignment_qc
+  M1:
+    contract_version: "1.0.0"
+    implementation_status: PARTIAL
+    upstream: [P0]
+    input_artifacts: [ROIAlignedSample, GraphConstructionSpec, ScienceContext]
+    output_artifacts: [MultiGraphArtifact]
+    source_of_truth: graph_topology
+  M2:
+    contract_version: "1.0.0"
+    implementation_status: CONTRACT_ONLY
+    upstream: [M1]
+    input_artifacts: [MultiGraphArtifact, M2Spec, ScienceContext]
+    output_artifacts: [SpectralBundle]
+    source_of_truth: laplacian_spectrum
+  M3:
+    contract_version: "1.0.0"
+    implementation_status: CONTRACT_ONLY
+    upstream: [M2]
+    input_artifacts: [SpectralBundle, CanonicalCoordinateSpec, BandSpec, ScienceContext]
+    output_artifacts: [CanonicalSpectrumBundle]
+    source_of_truth: canonical_coordinate_bands
+  M4:
+    contract_version: "1.0.0"
+    implementation_status: CONTRACT_ONLY
+    upstream: [M3]
+    input_artifacts: [MultiGraphArtifact, SpectralBundle, CanonicalSpectrumBundle, FilterSpec, ScienceContext]
+    output_artifacts: [BandSignalBundle]
+    source_of_truth: band_signal
+  M5:
+    contract_version: "1.0.0"
+    implementation_status: CONTRACT_ONLY
+    upstream: [M4]
+    input_artifacts: [BandSignalBundle, TokenizationSpec, ScienceContext]
+    output_artifacts: [TokenBundle]
+    source_of_truth: tokens
+  M6:
+    contract_version: "1.0.0"
+    implementation_status: CONTRACT_ONLY
+    upstream: [M5]
+    input_artifacts: [TokenBundle, NormalizedQCArtifact, availability, RoleSpec, ScienceContext]
+    output_artifacts: [RoleBundle]
+    source_of_truth: roles_reliability
+  M7:
+    contract_version: "1.0.0"
+    implementation_status: CONTRACT_ONLY
+    upstream: [M6]
+    input_artifacts: [TokenBundle, RoleBundle, RoutingSpec, ScienceContext]
+    output_artifacts: [RoutingBundle]
+    source_of_truth: routes
+  M8:
+    contract_version: "1.0.0"
+    implementation_status: CONTRACT_ONLY
+    upstream: [M7]
+    input_artifacts: [TokenBundle, RoleBundle, RoutingBundle, QC, ReadoutSpec, ScienceContext]
+    output_artifacts: [SampleEmbedding, PredictionBundle, LossBundle]
+    source_of_truth: prediction_objective
+  M9:
+    contract_version: "1.0.0"
+    implementation_status: CONTRACT_ONLY
+    upstream: [M8]
+    input_artifacts: [PredictionBundle, RoutingBundle, RoleBundle, SpectralBundle, CanonicalSpectrumBundle, ExperimentRegistry]
+    output_artifacts: [EvaluationBundle]
+    source_of_truth: evaluation
+source_of_truth:
+  M0: cohort_task_split
+  P0: roi_alignment_qc
+  M1: graph_topology
+  M2: laplacian_spectrum
+  M3: canonical_coordinate_bands
+  M4: band_signal
+  M5: tokens
+  M6: roles_reliability
+  M7: routes
+  M8: prediction_objective
+  M9: evaluation
+invalidation_dag: [M0, P0, M1, M2, M3, M4, M5, M6, M7, M8, M9]
+implementation_status_values: [EXISTING, PARTIAL, CONTRACT_ONLY, IMPLEMENTED, VERIFIED]
