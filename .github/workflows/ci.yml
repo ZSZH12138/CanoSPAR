@@ -54,6 +54,8 @@ jobs:
           pre-commit run --all-files
           snakemake -n -s workflow/Snakefile
           python scripts/verify_week1.py
+      - name: Verify architecture contract
+        run: python scripts/verify_architecture_contract.py
       - name: Package check
         run: |
           git diff --check

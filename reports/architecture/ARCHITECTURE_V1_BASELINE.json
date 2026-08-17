@@ -1,0 +1,13 @@
+{
+  "architecture_contract_version": "1.0.0",
+  "science_contract_version": "1.1.0",
+  "branch": "codex/architecture-contract-v1",
+  "baseline_commit": "fa947b625ff961c0a71b7dee6d93e1035bdddf28",
+  "baseline_commit_note": "This is the architecture baseline commit; subsequent receipt-only metadata commits may be descendants.",
+  "verification_status": "PASS",
+  "contract_test_status": "PASS",
+  "breaking_changes": false,
+  "unresolved_contract_conflicts": false,
+  "m2_m3_implementation_authorized": true,
+  "m4_m9_fake_implementation": false
+}
