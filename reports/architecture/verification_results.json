@@ -1,0 +1,89 @@
+{
+  "architecture_contract_version": "1.0.0",
+  "overall_status": "PASS",
+  "pass_count": 14,
+  "fail_count": 0,
+  "skip_count": 2,
+  "checks": [
+    {
+      "id": "G00_REQUIRED_FILES",
+      "status": "PASS",
+      "message": "all required architecture files exist"
+    },
+    {
+      "id": "G01_EXISTING_IMPORT_COMPATIBILITY",
+      "status": "PASS",
+      "message": "legacy graph imports preserved"
+    },
+    {
+      "id": "G02_ARTIFACT_SCHEMA_COMPLETE",
+      "status": "PASS",
+      "message": "artifact contract modules import"
+    },
+    {
+      "id": "G03_MODULE_API_COMPLETE",
+      "status": "PASS",
+      "message": "P0 and M0-M9 public symbols import"
+    },
+    {
+      "id": "G04_MODULE_REGISTRY_CONSISTENT",
+      "status": "PASS",
+      "message": "registry is internally consistent"
+    },
+    {
+      "id": "G05_VERSION_NAMESPACES_SEPARATED",
+      "status": "PASS",
+      "message": "version namespaces are distinct"
+    },
+    {
+      "id": "G06_LINEAGE_DETERMINISTIC",
+      "status": "PASS",
+      "message": "science and reproduction keys are deterministic"
+    },
+    {
+      "id": "G07_CACHE_IDENTITY_CORRECT",
+      "status": "PASS",
+      "message": "cache eligibility is fail-closed"
+    },
+    {
+      "id": "G08_INVALIDATION_DAG_CORRECT",
+      "status": "PASS",
+      "message": "M3 invalidates only M3-M9"
+    },
+    {
+      "id": "G09_RUNTIME_SCIENCE_DECOUPLED",
+      "status": "PASS",
+      "message": "runtime profile changes do not alter science identity"
+    },
+    {
+      "id": "G10_FAIL_CLOSED_VALIDATION",
+      "status": "PASS",
+      "message": "schema mismatch produces FAIL"
+    },
+    {
+      "id": "G11_CONTRACT_TESTS_PASS",
+      "status": "PASS",
+      "message": "43 passed, 3 warnings in 3.95s"
+    },
+    {
+      "id": "G12_NO_FAKE_SCIENTIFIC_IMPLEMENTATION",
+      "status": "PASS",
+      "message": "M4-M9 are explicitly CONTRACT_ONLY"
+    },
+    {
+      "id": "G13_EXISTING_REGRESSION_ACCEPTABLE",
+      "status": "SKIP",
+      "message": "full regression is recorded separately; inherited baseline has pre-existing failures"
+    },
+    {
+      "id": "G14_DOCUMENTATION_COMPLETE",
+      "status": "PASS",
+      "message": "architecture documentation present"
+    },
+    {
+      "id": "G15_FINAL_REPORT_COMPLETE",
+      "status": "SKIP",
+      "message": "final report is generated after implementation"
+    }
+  ]
+}
