@@ -344,8 +344,8 @@ Architecture Contract v1 is now the frozen interface baseline for a subsequent M
 | Item | Final evidence | Status |
 | --- | --- | --- |
 | final branch | `codex/architecture-contract-v1` | recorded in final handoff |
-| final HEAD | recorded after the final commit in the final handoff | recorded in final handoff |
-| baseline SHA | `ARCHITECTURE_CONTRACT_V1_BASELINE_SHA` in this section and the final handoff | frozen after final commit |
+| final HEAD | `9841d00db2b8cf7c795e50d08c451546e3727288` architecture baseline commit; receipt-only closeout descendants are reported in the final handoff | FROZEN |
+| baseline SHA | `9841d00db2b8cf7c795e50d08c451546e3727288` | FROZEN |
 | architecture verifier | G01-G15 PASS/SKIP as defined; G16 NumericsProfile semantics PASS | PASS |
 | contract tests | final fresh `tests/contracts`: `53 passed, 3 warnings` | PASS |
 | full regression delta | previous `2054 passed, 4 failed, 17 skipped` → final `2063 passed, 4 failed, 17 skipped, 8 warnings`; +9 passes from NumericsProfile tests, no new failures | INHERITED_BASELINE |
@@ -356,6 +356,6 @@ Architecture Contract v1 is now the frozen interface baseline for a subsequent M
 | architecture baseline | `FROZEN` | FINALIZED |
 | M2+M3 implementation authorized | YES, from this SHA or an explicit descendant; implementation is not started in this task | YES |
 
-`ARCHITECTURE_CONTRACT_V1_BASELINE_SHA=<filled after final commit>`
+`ARCHITECTURE_CONTRACT_V1_BASELINE_SHA=9841d00db2b8cf7c795e50d08c451546e3727288`
 
 Subsequent M2/M3 branches must start from this SHA or an explicit descendant and must not silently modify Architecture Contract v1.
