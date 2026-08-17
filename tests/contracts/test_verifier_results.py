@@ -24,3 +24,5 @@ def test_verifier_has_named_core_gates() -> None:
         "G12_NO_FAKE_SCIENTIFIC_IMPLEMENTATION",
     ):
         assert checks[gate] == "PASS"
+
+    assert checks["G16_NUMERICS_PROFILE_SEMANTICS"] == "PASS"

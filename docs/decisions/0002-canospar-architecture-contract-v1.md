@@ -13,4 +13,4 @@ The project contains both scientific data contracts and operational execution wo
 
 ## Consequences
 
-L0-L3 are stable and versioned. L4 is replaceable. M4-M9 remain CONTRACT_ONLY until real implementations and validation evidence exist. Breaking changes require a version bump, migration adapter, compatibility tests, and invalidation analysis.
+L0-L3 are stable and versioned. L4 is replaceable. `RuntimeProfile` and `NumericsProfile` remain separate: runtime placement is operational evidence, while numerical semantics participate in `reproduction_key`. M4-M9 remain CONTRACT_ONLY until real implementations and validation evidence exist. Breaking changes require a version bump, migration adapter, compatibility tests, and invalidation analysis.

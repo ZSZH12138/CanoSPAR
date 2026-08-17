@@ -33,6 +33,7 @@ REQUIRED_FILES = (
     "docs/architecture/EXISTING_WORK_PLACEMENT_MAP.md",
     "docs/decisions/0002-canospar-architecture-contract-v1.md",
     "configs/architecture/contracts_v1.yaml",
+    "reports/architecture/ARCHITECTURE_V1_BASELINE.json",
     "src/canospar/contracts/__init__.py",
     "src/canospar/contracts/base.py",
     "src/canospar/contracts/execution.py",
@@ -50,6 +51,7 @@ REQUIRED_FILES = (
     "src/canospar/api/m9.py",
     "src/canospar/validators/__init__.py",
     "src/canospar/runtime/__init__.py",
+    "src/canospar/runtime/numerics.py",
 )
 
 
@@ -72,6 +74,8 @@ def check_registry_consistency(registry: dict[str, Any]) -> list[str]:
         errors.append("schema_version must be 1.0.0")
     if registry.get("runtime_profile_version") != "1.0.0":
         errors.append("runtime_profile_version must be 1.0.0")
+    if registry.get("numerics_profile_schema_version") != "1.0.0":
+        errors.append("numerics_profile_schema_version must be 1.0.0")
 
     modules = registry.get("modules")
     if not isinstance(modules, dict):
@@ -235,6 +239,7 @@ def run_checks(root: Path) -> dict[str, Any]:
             "science_contract_version",
             "schema_version",
             "runtime_profile_version",
+            "numerics_profile_schema_version",
         )
         if len(set(namespace_keys)) == len(namespace_keys) and all(
             isinstance(registry[key], str) and registry[key] for key in namespace_keys
@@ -433,6 +438,100 @@ def run_checks(root: Path) -> dict[str, Any]:
             else "final report is generated after implementation",
         )
     )
+
+    try:
+        from canospar.contracts.base import (
+            ScienceContext,
+            build_reproduction_key,
+            build_science_key,
+        )
+        from canospar.runtime.numerics import NumericsProfile, build_numerics_profile_hash
+        from canospar.runtime.profile import RuntimeProfile
+
+        profile = NumericsProfile(
+            python_version="3.11.9",
+            numpy_version="2.2.0",
+            scipy_version="1.15.0",
+            torch_version="2.6.0",
+            dtype="float64",
+            precision_policy="strict-float64",
+            deterministic_algorithms=True,
+            linear_algebra_backend="cpu-openblas",
+            eigensolver_backend="scipy.linalg.eigh",
+            solver_tolerance=1e-8,
+            numerical_backend_version="openblas-0.3.28",
+        )
+        dtype_changed = NumericsProfile(
+            python_version="3.11.9",
+            dtype="float32",
+            precision_policy="strict-float32",
+        )
+        backend_changed = NumericsProfile(
+            python_version="3.11.9",
+            dtype="float64",
+            precision_policy="strict-float64",
+            eigensolver_backend="torch.linalg.eigh",
+        )
+        tolerance_changed = NumericsProfile(
+            python_version="3.11.9",
+            dtype="float64",
+            precision_policy="strict-float64",
+            solver_tolerance=1e-4,
+        )
+        context = ScienceContext(science_config_hash="config-a")
+        runtime_a = RuntimeProfile(
+            profile_id="server-a",
+            cpu_count=28,
+            gpu_count=2,
+            worker_count=4,
+            server_class="linux",
+        )
+        runtime_b = RuntimeProfile(
+            profile_id="server-b",
+            cpu_count=112,
+            gpu_count=8,
+            worker_count=16,
+            server_class="windows",
+        )
+        science_a = build_science_key(
+            context,
+            ("input-a",),
+            "M2",
+            runtime_profile_id=runtime_a.profile_id,
+        )
+        science_b = build_science_key(
+            context,
+            ("input-a",),
+            "M2",
+            runtime_profile_id=runtime_b.profile_id,
+        )
+        numerics_hash = build_numerics_profile_hash(profile)
+        runtime_reproduction_same = build_reproduction_key(
+            science_a, "impl-a", numerics_hash
+        ) == build_reproduction_key(science_b, "impl-a", numerics_hash)
+        numerics_hashes_change = all(
+            numerics_hash != build_numerics_profile_hash(changed)
+            for changed in (dtype_changed, backend_changed, tolerance_changed)
+        )
+        reproduction_changes = all(
+            build_reproduction_key(science_a, "impl-a", numerics_hash)
+            != build_reproduction_key(science_a, "impl-a", build_numerics_profile_hash(changed))
+            for changed in (dtype_changed, backend_changed, tolerance_changed)
+        )
+        checks.append(
+            _check(
+                "G16_NUMERICS_PROFILE_SEMANTICS",
+                "PASS"
+                if science_a == science_b
+                and runtime_reproduction_same
+                and numerics_hashes_change
+                and reproduction_changes
+                else "FAIL",
+                "runtime is excluded while numerical semantics alter reproduction identity",
+            )
+        )
+    except Exception as error:
+        checks.append(_check("G16_NUMERICS_PROFILE_SEMANTICS", "FAIL", str(error)))
 
     fail_count = sum(item["status"] == "FAIL" for item in checks)
     pass_count = sum(item["status"] == "PASS" for item in checks)

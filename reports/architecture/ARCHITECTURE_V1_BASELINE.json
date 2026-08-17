@@ -1,0 +1,13 @@
+{
+  "architecture_contract_version": "1.0.0",
+  "science_contract_version": "1.1.0",
+  "branch": "codex/architecture-contract-v1",
+  "baseline_commit": null,
+  "baseline_commit_note": "The final baseline SHA is recorded in the implementation report and final handoff to avoid self-referential commit identity.",
+  "verification_status": "PASS",
+  "contract_test_status": "PASS",
+  "breaking_changes": false,
+  "unresolved_contract_conflicts": false,
+  "m2_m3_implementation_authorized": true,
+  "m4_m9_fake_implementation": false
+}

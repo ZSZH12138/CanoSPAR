@@ -2,13 +2,13 @@
 
 ## 1. 最终结论
 
-**PARTIAL**
+**ARCHITECTURE_V1_FINALIZED**
 
-Architecture Contract v1 的核心契约门禁 G01-G12 已通过，公共骨架、Artifact metadata、Module API、lineage/cache/invalidation、Runtime separation 和机器 verifier 已建立。
+Architecture Contract v1 的核心契约门禁 G01-G12 已通过，新增 NumericsProfile 语义门禁 G16 也已通过；公共骨架、Artifact metadata、Module API、lineage/cache/invalidation、Runtime separation 和机器 verifier 已建立。
 
 之所以不是全仓 PASS，是因为当前基线仍有与本次架构变更无关的环境和既有回归问题：
 
-- 全仓回归：2054 passed, 4 failed, 17 skipped；
+- 全仓回归：2063 passed, 4 failed, 17 skipped, 8 warnings；相对上一轮只增加本轮 9 个契约测试，失败数和失败类型未增加；
 - 2 个失败来自当前环境缺少 Snakemake；
 - 2 个失败来自未修改的 MRIQC v2 controller 集成生命周期测试；
 - mypy 保留 2 个既有 pilot_atlas.py 错误；
@@ -142,14 +142,15 @@ The following namespaces are separate:
 - module_contract_version: 1.0.0
 - schema_version: 1.0.0
 - runtime_profile_version: 1.0.0
+- numerics_profile_schema_version: 1.0.0
 
 No existing scientific protocol was changed. This is additive, so there is no breaking change.
 
 ## 10. Lineage / Cache
 
-ArtifactMeta is frozen and records schema, artifact, producer module, module version, science version, input IDs/hashes, science configuration, dataset manifest, split, seed, content hash, implementation hash, numerics profile hash, and UTC creation time.
+ArtifactMeta is frozen and records schema, artifact, producer module, module version, science version, input IDs/hashes, science configuration, dataset manifest, split, seed, content hash, implementation hash, numerics profile hash, and UTC creation time. NumericsProfile is a separate frozen value object whose canonical hash binds numerical library identity, dtype/precision, deterministic settings, eigensolver/backend choice, and solver tolerance. RuntimeProfile remains execution provenance and is excluded from both scientific and numerical identity.
 
-ScienceContext is the single scientific identity input. science_key is deterministic and excludes runtime profile. reproduction_key changes with implementation or numerics profile.
+ScienceContext is the single scientific identity input. science_key is deterministic and excludes runtime profile. reproduction_key changes with implementation or the canonical NumericsProfile hash. Runtime-only changes such as worker count, GPU count, server, Bita, SSH, WebTerminal, or scheduler concurrency do not change reproduction identity when numerical identity is unchanged.
 
 Cache reuse requires matching science key, reproduction key, artifact hash, PASS/READY receipt, and PASS validator status.
 
@@ -161,11 +162,11 @@ The DAG is:
 M0 -> P0 -> M1 -> M2 -> M3 -> M4 -> M5 -> M6 -> M7 -> M8 -> M9
 ~~~
 
-A change at M3 invalidates M3-M9 only. M0-P0-M2 remain valid. Runtime profile changes do not invalidate scientific artifacts when science and reproduction identities are unchanged.
+A change at M3 invalidates M3-M9 only. M0, P0, M1, and M2 remain valid. Runtime profile changes do not invalidate scientific artifacts when science and reproduction identities are unchanged.
 
 ## 12. Runtime Separation
 
-RuntimeProfile contains CPU, RAM, GPU, CUDA, workers, threads, container, scheduler, transport, and server class. These are not scientific module inputs.
+RuntimeProfile contains CPU, RAM, GPU, CUDA, workers, threads, container, scheduler, transport, and server class. These are not scientific module inputs. NumericsProfile separately records the numerical semantics that affect reproduction identity.
 
 The following existing work is placed under L3/L4:
 
@@ -173,14 +174,14 @@ The following existing work is placed under L3/L4:
 - MRIQC v2 scheduler, ledger, monitor, checkpoint/recovery, and native Linux support;
 - SSH, WebTerminal, server type, and runtime feasibility results.
 
-No runtime value enters science_key or reproduction_key.
+No runtime-only value enters science_key or reproduction_key. Numerical backend identity enters only through NumericsProfile.
 
 ## 13. Contract Tests
 
 The dedicated contract suite passed:
 
 ~~~text
-44 passed, 3 warnings
+53 passed, 3 warnings
 ~~~
 
 It covers:
@@ -189,6 +190,7 @@ It covers:
 - immutable ArtifactMeta and ScienceContext;
 - deterministic science_key/reproduction_key;
 - runtime identity exclusion;
+- immutable NumericsProfile and numerical identity changes for dtype, eigensolver backend, and solver tolerance;
 - artifact key hierarchy;
 - imaging and graph wrappers;
 - M0 read-only references;
@@ -204,13 +206,15 @@ It covers:
 The full importlib-mode regression result was:
 
 ~~~text
-2054 passed, 4 failed, 17 skipped, 8 warnings
+2063 passed, 4 failed, 17 skipped, 8 warnings
 ~~~
 
-The 4 failures are not caused by this architecture change:
+The 4 failures are not caused by this architecture closure:
 
 1. Two Week2-4 Snakemake integration tests fail because Snakemake is not installed in the selected environment.
 2. Two MRIQC v2 controller tests fail in unchanged server lifecycle code with heartbeat/owned-lane startup behavior on this Windows host.
+
+Fresh Week1/Week2-4 verifier attempts are recorded as `PREEXISTING_ENVIRONMENT_BLOCK`: the selected environment lacks entmax/Snakemake, and the inherited default collection/path/mypy checks remain outside this architecture closure.
 
 Ruff check and Ruff format check both passed. The mypy result remains:
 
@@ -232,9 +236,11 @@ Created:
 - src/canospar/api/*;
 - src/canospar/validators/*;
 - src/canospar/runtime/*;
+- src/canospar/runtime/numerics.py;
 - tests/contracts/*;
 - scripts/verify_architecture_contract.py;
 - reports/architecture/verification_results.json;
+- reports/architecture/ARCHITECTURE_V1_BASELINE.json;
 - this report.
 
 Modified:
@@ -256,7 +262,7 @@ No existing scientific module implementation, real data, private artifact, serve
 - typed P0/M0-M9 API boundaries;
 - validation reports and contract errors;
 - CompletionReceipt and ModuleRunResult;
-- RuntimeProfile;
+- RuntimeProfile and NumericsProfile with explicit runtime/numerics separation;
 - fail-closed cache eligibility;
 - invalidation DAG;
 - contract tests;
@@ -322,13 +328,34 @@ The Python commands must use the configured Anaconda environment and the reposit
 
 ## 20. Recommendation
 
-**建议进入 M2 + M3 的实现阶段，但仅以本 Architecture Contract v1 作为接口基础。**
+Architecture Contract v1 is now the frozen interface baseline for a subsequent M2/M3 implementation branch. This closure does not implement M2/M3 and does not run scientific data or experiments.
 
 进入条件已经满足：
 
 - M2/M3 的输入、输出和 source-of-truth 已冻结；
 - M3 被强制绑定到 M2 的 SpectrumArtifact；
 - cache、lineage、version 和 invalidation 语义已定义；
-- contract suite 和 G01-G12 verifier 门禁通过。
+- contract suite 和 G01-G16 verifier 门禁通过。
 
 进入 M2/M3 后仍必须继续使用 TDD、toy/synthetic tests、exact-before-approximate 验证，并保持真实 HCP/PPMI 全量运行、服务器、GPU 和正式科学实验关闭，直到另行授权。
+
+## 21. Architecture v1 Release Closure
+
+| Item | Final evidence | Status |
+| --- | --- | --- |
+| final branch | `codex/architecture-contract-v1` | recorded in final handoff |
+| final HEAD | recorded after the final commit in the final handoff | recorded in final handoff |
+| baseline SHA | `ARCHITECTURE_CONTRACT_V1_BASELINE_SHA` in this section and the final handoff | frozen after final commit |
+| architecture verifier | G01-G15 PASS/SKIP as defined; G16 NumericsProfile semantics PASS | PASS |
+| contract tests | final fresh `tests/contracts`: `53 passed, 3 warnings` | PASS |
+| full regression delta | previous `2054 passed, 4 failed, 17 skipped` → final `2063 passed, 4 failed, 17 skipped, 8 warnings`; +9 passes from NumericsProfile tests, no new failures | INHERITED_BASELINE |
+| NumericsProfile | immutable; runtime-only identity excluded; numerical semantic changes alter reproduction identity | FROZEN |
+| worktree clean | verified after final commit | recorded in final handoff |
+| main modified | no | NO |
+| push performed | no | NO |
+| architecture baseline | `FROZEN` | FINALIZED |
+| M2+M3 implementation authorized | YES, from this SHA or an explicit descendant; implementation is not started in this task | YES |
+
+`ARCHITECTURE_CONTRACT_V1_BASELINE_SHA=<filled after final commit>`
+
+Subsequent M2/M3 branches must start from this SHA or an explicit descendant and must not silently modify Architecture Contract v1.

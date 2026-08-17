@@ -16,6 +16,7 @@ def test_registry_contains_p0_and_m0_to_m9() -> None:
     registry = load_registry(ROOT)
 
     assert tuple(registry["modules"]) == MODULE_NAMES
+    assert registry["numerics_profile_schema_version"] == "1.0.0"
     assert registry["modules"]["M4"]["implementation_status"] == "CONTRACT_ONLY"
     assert registry["modules"]["M9"]["implementation_status"] == "CONTRACT_ONLY"
 

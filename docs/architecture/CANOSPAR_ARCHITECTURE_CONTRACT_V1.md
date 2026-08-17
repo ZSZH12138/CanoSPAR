@@ -18,7 +18,7 @@ This task does not run real HCP/PPMI data, MRIQC, fMRIPrep, QSIPrep, FreeSurfer,
 | L3 Execution Contract | validation, receipts, lineage, cache, invalidation |
 | L4 Runtime Profile | CPU/GPU, workers, containers, schedulers, transport, server lifecycle |
 
-L0-L3 are stable versioned contracts. L4 is replaceable and must never be embedded in scientific APIs or science_key.
+L0-L3 are stable versioned contracts. L4 is replaceable and must never be embedded in scientific APIs or `science_key`.
 
 ## Module graph
 
@@ -56,12 +56,12 @@ Source-of-truth ownership is strict: M0 owns cohort/task/split; P0 owns ROI alig
 
 GraphData and BrainMultiGraphSample remain the existing data objects and imports remain valid. MultiGraphArtifact wraps BrainMultiGraphSample with ArtifactMeta, atlas identity, ROI table hash, and node-order hash. M0 uses read-only references to existing manifests/reports.
 
-ArtifactMeta and ScienceContext are immutable. science_key uses module contract version, input content hashes, science config hash, dataset manifest hash, split, and seed only. reproduction_key additionally uses implementation hash and numerics profile hash. CPU/GPU/server/Bita/SSH/worker values never enter these keys.
+ArtifactMeta, ScienceContext, and NumericsProfile are immutable. `science_key` uses module contract version, input content hashes, science config hash, dataset manifest hash, split, and seed only. `reproduction_key` additionally uses implementation hash and canonical `numerics_profile_hash`. CPU/GPU/server/Bita/SSH/worker values never enter these keys unless a numerical backend change is explicitly represented in NumericsProfile.
 
-A formal run needs CompletionReceipt. Cache reuse is fail-closed: science key, reproduction key, artifact hash, receipt status, and validator status must agree. A change at M3 invalidates M3-M9 while keeping M0-M2 valid. Runtime-only changes do not invalidate scientific artifacts when scientific and reproduction identities are unchanged.
+A formal run needs CompletionReceipt. Cache reuse is fail-closed: science key, reproduction key, artifact hash, receipt status, and validator status must agree. A change at M3 invalidates M3-M9 while keeping M0, P0, M1, and M2 valid. Runtime-only changes do not invalidate scientific artifacts when scientific and reproduction identities are unchanged.
 
 ## Runtime placement and version policy
 
 Week 5-7 archive/extraction/DICOM/BIDS/atlas/QC is P0 plus L3 evidence. MRIQC v2 scheduling, monitoring, handoff, native Linux support, Bita, SSH, and WebTerminal are L3/L4 runtime evidence, not M2-M9 implementations.
 
-The namespaces architecture_contract_version, science_contract_version, module_contract_version, schema_version, and runtime_profile_version remain distinct. PATCH preserves semantics; MINOR adds backward-compatible metadata/backends; MAJOR requires an ADR, migration adapter, compatibility tests, and invalidation analysis.
+The namespaces `architecture_contract_version`, `science_contract_version`, `module_contract_version`, `schema_version`, `runtime_profile_version`, and `numerics_profile_schema_version` remain distinct. PATCH preserves semantics; MINOR adds backward-compatible metadata/backends; MAJOR requires an ADR, migration adapter, compatibility tests, and invalidation analysis.
