@@ -24,6 +24,9 @@ class NumericsProfile:
     linear_algebra_backend: str | None = None
     eigensolver_backend: str | None = None
     solver_tolerance: float | None = None
+    zero_tolerance: float | None = None
+    tie_tolerance: float | None = None
+    dirichlet_epsilon: float | None = None
     cuda_version: str | None = None
     numerical_backend_version: str | None = None
 
@@ -46,13 +49,20 @@ class NumericsProfile:
             self.deterministic_algorithms, bool
         ):
             raise ValueError("deterministic_algorithms must be a bool or None")
-        if self.solver_tolerance is not None and (
-            not isinstance(self.solver_tolerance, int | float)
-            or isinstance(self.solver_tolerance, bool)
-            or not math.isfinite(self.solver_tolerance)
-            or self.solver_tolerance < 0
+        for field_name in (
+            "solver_tolerance",
+            "zero_tolerance",
+            "tie_tolerance",
+            "dirichlet_epsilon",
         ):
-            raise ValueError("solver_tolerance must be a finite non-negative number or None")
+            value = getattr(self, field_name)
+            if value is not None and (
+                not isinstance(value, int | float)
+                or isinstance(value, bool)
+                or not math.isfinite(value)
+                or value < 0
+            ):
+                raise ValueError(f"{field_name} must be a finite non-negative number or None")
 
     @property
     def numerics_profile_hash(self) -> str:

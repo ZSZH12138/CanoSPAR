@@ -21,7 +21,8 @@ if str(SOURCE_ROOT) not in sys.path:
     sys.path.insert(0, str(SOURCE_ROOT))
 
 MODULE_NAMES = ("M0", "P0", "M1", "M2", "M3", "M4", "M5", "M6", "M7", "M8", "M9")
-CONTRACT_ONLY_MODULES = ("M4", "M5", "M6", "M7", "M8", "M9")
+MODULE_PROTOCOL_SPEC_VERSION = "1.1.0"
+CONTRACT_ONLY_MODULES = ("M3", "M4", "M5", "M6", "M7", "M8", "M9")
 REQUIRED_FILES = (
     "AGENTS.md",
     "docs/architecture/CANOSPAR_ARCHITECTURE_CONTRACT_V1.md",
@@ -31,7 +32,10 @@ REQUIRED_FILES = (
     "docs/architecture/RUNTIME_BOUNDARY_V1.md",
     "docs/architecture/CONTRACT_CHANGE_POLICY.md",
     "docs/architecture/EXISTING_WORK_PLACEMENT_MAP.md",
+    "docs/architecture/CANOSPAR_MODULE_PROTOCOL_SPEC_V1.md",
+    "docs/architecture/archive/CANOSPAR_MODULE_PROTOCOL_SPEC_V1_0_0.md",
     "docs/decisions/0002-canospar-architecture-contract-v1.md",
+    "docs/decisions/0003-module-protocol-v1.1-m2-m4-contract-repair.md",
     "configs/architecture/contracts_v1.yaml",
     "reports/architecture/ARCHITECTURE_V1_BASELINE.json",
     "src/canospar/contracts/__init__.py",
@@ -76,6 +80,8 @@ def check_registry_consistency(registry: dict[str, Any]) -> list[str]:
         errors.append("runtime_profile_version must be 1.0.0")
     if registry.get("numerics_profile_schema_version") != "1.0.0":
         errors.append("numerics_profile_schema_version must be 1.0.0")
+    if registry.get("module_protocol_spec_version") != MODULE_PROTOCOL_SPEC_VERSION:
+        errors.append(f"module_protocol_spec_version must be {MODULE_PROTOCOL_SPEC_VERSION}")
 
     modules = registry.get("modules")
     if not isinstance(modules, dict):
@@ -87,8 +93,8 @@ def check_registry_consistency(registry: dict[str, Any]) -> list[str]:
         if not isinstance(module, dict):
             errors.append(f"{module_id} must be a mapping")
             continue
-        if module.get("contract_version") != "1.0.0":
-            errors.append(f"{module_id} contract_version must be 1.0.0")
+        if module.get("contract_version") != MODULE_PROTOCOL_SPEC_VERSION:
+            errors.append(f"{module_id} contract_version must be {MODULE_PROTOCOL_SPEC_VERSION}")
         status = module.get("implementation_status")
         if status not in {"EXISTING", "PARTIAL", "CONTRACT_ONLY", "IMPLEMENTED", "VERIFIED"}:
             errors.append(f"{module_id} has an invalid implementation_status")
@@ -240,6 +246,7 @@ def run_checks(root: Path) -> dict[str, Any]:
             "schema_version",
             "runtime_profile_version",
             "numerics_profile_schema_version",
+            "module_protocol_spec_version",
         )
         if len(set(namespace_keys)) == len(namespace_keys) and all(
             isinstance(registry[key], str) and registry[key] for key in namespace_keys
@@ -292,7 +299,7 @@ def run_checks(root: Path) -> dict[str, Any]:
 
         receipt = CompletionReceipt(
             module_id="M1",
-            module_contract_version="1.0.0",
+            module_contract_version=MODULE_PROTOCOL_SPEC_VERSION,
             science_contract_version="1.1.0",
             canonical_status=CanonicalStatus.PASS,
             native_status=None,
@@ -369,7 +376,7 @@ def run_checks(root: Path) -> dict[str, Any]:
             artifact_type="VerifierArtifact",
             artifact_id="artifact-a",
             producer_module="M1",
-            module_contract_version="1.0.0",
+            module_contract_version=MODULE_PROTOCOL_SPEC_VERSION,
             science_contract_version="1.1.0",
             input_artifact_ids=(),
             input_content_hashes=(),
@@ -406,7 +413,7 @@ def run_checks(root: Path) -> dict[str, Any]:
             _check(
                 "G12_NO_FAKE_SCIENTIFIC_IMPLEMENTATION",
                 "PASS" if no_fake else "FAIL",
-                "M4-M9 are explicitly CONTRACT_ONLY",
+                "M3-M9 are explicitly CONTRACT_ONLY",
             )
         )
     except Exception as error:
@@ -426,8 +433,8 @@ def run_checks(root: Path) -> dict[str, Any]:
             "architecture documentation present",
         )
     )
-    report_path = (
-        root / "reports/architecture/CANOSPAR_ARCHITECTURE_CONTRACT_V1_IMPLEMENTATION_REPORT.md"
+    report_path = root / (
+        "reports/architecture/module_protocol_v1_1/MODULE_PROTOCOL_V1_1_LOCAL_CONVERGENCE_REPORT.md"
     )
     checks.append(
         _check(
@@ -538,6 +545,7 @@ def run_checks(root: Path) -> dict[str, Any]:
     skip_count = sum(item["status"] == "SKIP" for item in checks)
     return {
         "architecture_contract_version": "1.0.0",
+        "module_protocol_spec_version": MODULE_PROTOCOL_SPEC_VERSION,
         "overall_status": "PASS" if fail_count == 0 else "PARTIAL",
         "pass_count": pass_count,
         "fail_count": fail_count,

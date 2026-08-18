@@ -4,27 +4,36 @@ from __future__ import annotations
 
 from collections.abc import Mapping
 from dataclasses import dataclass, field
-from typing import Any
 
-from .base import ArtifactMeta, _freeze_mapping, require_non_empty_text
+from .base import (
+    ArtifactMeta,
+    BandKey,
+    GraphKey,
+    JsonValue,
+    Tensor,
+    _freeze_mapping,
+    require_non_empty_text,
+)
 from .errors import ContractViolation
 
 
 @dataclass(frozen=True)
 class BandSpec:
     band_count: int
-    tie_policy: str = "right"
+    tie_policy: str = "keep_ties_intact"
 
     def __post_init__(self) -> None:
         if isinstance(self.band_count, bool) or self.band_count <= 0:
             raise ContractViolation("band_count must be a positive integer")
         require_non_empty_text(self.tie_policy, "tie_policy")
+        if self.tie_policy != "keep_ties_intact":
+            raise ValueError("tie_policy must be keep_ties_intact")
 
 
 @dataclass(frozen=True)
 class FilterSpec:
     backend: str
-    parameters: Mapping[str, Any] = field(default_factory=dict)
+    parameters: Mapping[str, JsonValue] = field(default_factory=dict)
 
     def __post_init__(self) -> None:
         require_non_empty_text(self.backend, "backend")
@@ -34,10 +43,10 @@ class FilterSpec:
 @dataclass(frozen=True)
 class CanonicalSpectrumArtifact:
     meta: ArtifactMeta
-    graph_key: object
+    graph_key: GraphKey
     spectrum_artifact_id: str
-    u_coordinate: object
-    lambda_coordinate: object
+    u_coordinate: Tensor
+    lambda_coordinate: Tensor
 
     def __post_init__(self) -> None:
         require_non_empty_text(self.spectrum_artifact_id, "spectrum_artifact_id")
@@ -67,4 +76,4 @@ class CanonicalSpectrumBundle:
 @dataclass(frozen=True)
 class BandSignalBundle:
     meta: ArtifactMeta
-    signals: tuple[object, ...] = ()
+    signals: tuple[tuple[BandKey, Tensor], ...] = ()

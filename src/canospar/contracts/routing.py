@@ -4,16 +4,23 @@ from __future__ import annotations
 
 from collections.abc import Mapping
 from dataclasses import dataclass, field
-from typing import Any
 
-from .base import ArtifactMeta, _freeze_mapping, require_non_empty_text
+from .base import (
+    ArtifactMeta,
+    JsonValue,
+    RouteEdge,
+    ScoredRouteEdge,
+    TokenPair,
+    _freeze_mapping,
+    require_non_empty_text,
+)
 
 
 @dataclass(frozen=True)
 class RoutingSpec:
     backend: str
     top_k: int
-    parameters: Mapping[str, Any] = field(default_factory=dict)
+    parameters: Mapping[str, JsonValue] = field(default_factory=dict)
 
     def __post_init__(self) -> None:
         require_non_empty_text(self.backend, "backend")
@@ -25,25 +32,25 @@ class RoutingSpec:
 @dataclass(frozen=True)
 class RouteCandidateGraph:
     meta: ArtifactMeta
-    edges: tuple[object, ...] = ()
+    edges: tuple[RouteEdge, ...] = ()
 
 
 @dataclass(frozen=True)
 class RouteScoreGraph:
     meta: ArtifactMeta
-    scores: tuple[object, ...] = ()
+    scores: tuple[ScoredRouteEdge, ...] = ()
 
 
 @dataclass(frozen=True)
 class RouteGraph:
     meta: ArtifactMeta
-    edges: tuple[object, ...] = ()
+    edges: tuple[ScoredRouteEdge, ...] = ()
 
 
 @dataclass(frozen=True)
 class RoutedTokenBundle:
     meta: ArtifactMeta
-    values: tuple[object, ...] = ()
+    values: tuple[TokenPair, ...] = ()
 
 
 @dataclass(frozen=True)

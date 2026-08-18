@@ -4,15 +4,14 @@ from __future__ import annotations
 
 from collections.abc import Mapping
 from dataclasses import dataclass, field
-from typing import Any
 
-from .base import ArtifactMeta, _freeze_mapping, require_non_empty_text
+from .base import ArtifactMeta, JsonObject, JsonValue, _freeze_mapping, require_non_empty_text
 
 
 @dataclass(frozen=True)
 class EvaluationSpec:
     backend: str
-    parameters: Mapping[str, Any] = field(default_factory=dict)
+    parameters: Mapping[str, JsonValue] = field(default_factory=dict)
 
     def __post_init__(self) -> None:
         require_non_empty_text(self.backend, "backend")
@@ -41,7 +40,7 @@ class MetricReport:
 @dataclass(frozen=True)
 class MechanismReport:
     meta: ArtifactMeta
-    values: Mapping[str, object]
+    values: JsonObject
 
     def __post_init__(self) -> None:
         object.__setattr__(self, "values", _freeze_mapping(self.values, "values"))
@@ -50,7 +49,7 @@ class MechanismReport:
 @dataclass(frozen=True)
 class RobustnessReport:
     meta: ArtifactMeta
-    values: Mapping[str, object]
+    values: JsonObject
 
     def __post_init__(self) -> None:
         object.__setattr__(self, "values", _freeze_mapping(self.values, "values"))
@@ -59,7 +58,7 @@ class RobustnessReport:
 @dataclass(frozen=True)
 class StabilityReport:
     meta: ArtifactMeta
-    values: Mapping[str, object]
+    values: JsonObject
 
     def __post_init__(self) -> None:
         object.__setattr__(self, "values", _freeze_mapping(self.values, "values"))
@@ -68,7 +67,7 @@ class StabilityReport:
 @dataclass(frozen=True)
 class StatisticalTestReport:
     meta: ArtifactMeta
-    values: Mapping[str, object]
+    values: JsonObject
 
     def __post_init__(self) -> None:
         object.__setattr__(self, "values", _freeze_mapping(self.values, "values"))
@@ -77,4 +76,7 @@ class StatisticalTestReport:
 @dataclass(frozen=True)
 class EvaluationBundle:
     meta: ArtifactMeta
-    reports: tuple[object, ...] = ()
+    reports: tuple[
+        MetricReport | MechanismReport | RobustnessReport | StabilityReport | StatisticalTestReport,
+        ...,
+    ] = ()

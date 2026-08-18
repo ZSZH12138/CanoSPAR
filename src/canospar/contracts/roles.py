@@ -4,15 +4,14 @@ from __future__ import annotations
 
 from collections.abc import Mapping
 from dataclasses import dataclass, field
-from typing import Any
 
-from .base import ArtifactMeta, _freeze_mapping, require_non_empty_text
+from .base import ArtifactMeta, JsonValue, Tensor, _freeze_mapping, require_non_empty_text
 
 
 @dataclass(frozen=True)
 class RoleSpec:
     backend: str
-    parameters: Mapping[str, Any] = field(default_factory=dict)
+    parameters: Mapping[str, JsonValue] = field(default_factory=dict)
 
     def __post_init__(self) -> None:
         require_non_empty_text(self.backend, "backend")
@@ -23,7 +22,7 @@ class RoleSpec:
 class RoleBundle:
     meta: ArtifactMeta
     token_ids: tuple[str, ...] = ()
-    shared_probability: object | None = None
-    private_probability: object | None = None
-    noisy_probability: object | None = None
-    reliability: object | None = None
+    shared_probability: Tensor | None = None
+    private_probability: Tensor | None = None
+    noisy_probability: Tensor | None = None
+    reliability: Tensor | None = None

@@ -2,17 +2,19 @@
 
 from __future__ import annotations
 
-from canospar.contracts.base import ScienceContext
+from canospar.contracts.base import AvailabilityMask, ScienceContext
 from canospar.contracts.roles import RoleBundle, RoleSpec
+from canospar.contracts.spectral import NormalizedQCArtifact
 from canospar.contracts.tokens import TokenBundle
+from canospar.validators.base import ValidationReport
 
 from ._contract_only import contract_only
 
 
 def infer_roles(
     tokens: TokenBundle,
-    normalized_qc: object,
-    availability: object,
+    normalized_qc: NormalizedQCArtifact,
+    availability: AvailabilityMask,
     spec: RoleSpec,
     context: ScienceContext,
 ) -> RoleBundle:
@@ -20,6 +22,6 @@ def infer_roles(
     raise contract_only("M6")
 
 
-def validate_role_bundle(roles: RoleBundle) -> object:
+def validate_role_bundle(roles: RoleBundle) -> ValidationReport:
     del roles
     raise contract_only("M6")

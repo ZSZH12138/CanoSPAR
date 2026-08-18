@@ -4,10 +4,11 @@ from __future__ import annotations
 
 from collections.abc import Mapping
 from dataclasses import dataclass
-from typing import Any
 
 from .base import (
     ArtifactMeta,
+    JsonObject,
+    Tensor,
     _freeze_mapping,
     _freeze_string_tuple,
     require_non_empty_text,
@@ -22,7 +23,7 @@ class ImagingInputBundle:
     dataset: str
     raw_or_derivative_refs: Mapping[str, str]
     modality_available: Mapping[str, bool]
-    acquisition_metadata: Mapping[str, Any]
+    acquisition_metadata: JsonObject
     source_hashes: Mapping[str, str]
 
     def __post_init__(self) -> None:
@@ -61,7 +62,7 @@ class ROIAlignedSample:
     atlas_hash: str
     roi_table_hash: str
     node_order_hash: str
-    modality_payloads: Mapping[str, Any]
+    modality_payloads: Mapping[str, Mapping[str, Tensor]]
     modality_available: Mapping[str, bool]
     qc_vector: Mapping[str, float]
     qc_status: str

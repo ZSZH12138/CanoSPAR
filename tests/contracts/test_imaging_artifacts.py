@@ -8,7 +8,7 @@ def make_meta(artifact_type: str) -> ArtifactMeta:
         artifact_type=artifact_type,
         artifact_id="artifact-a",
         producer_module="P0",
-        module_contract_version="1.0.0",
+        module_contract_version="1.1.0",
         science_contract_version="1.1.0",
         input_artifact_ids=(),
         input_content_hashes=(),

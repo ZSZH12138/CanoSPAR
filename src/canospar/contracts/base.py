@@ -8,12 +8,32 @@ from collections.abc import Mapping, Sequence
 from copy import deepcopy
 from dataclasses import dataclass
 from types import MappingProxyType
-from typing import TypeVar, cast
+from typing import TypeAlias, TypeVar, cast
+
+import torch
 
 from canospar.data.contracts import BrainMultiGraphSample
 
+from . import governance as _governance
 from .errors import ContractViolation
 from .governance import SCIENCE_CONTRACT_VERSION
+
+MODULE_PROTOCOL_SPEC_VERSION = _governance.MODULE_PROTOCOL_SPEC_VERSION
+
+JsonScalar: TypeAlias = str | int | float | bool | None
+JsonValue: TypeAlias = JsonScalar | Sequence[JsonScalar] | Mapping[str, JsonScalar]
+JsonObject: TypeAlias = Mapping[str, JsonValue]
+Tensor: TypeAlias = torch.Tensor
+QCVector: TypeAlias = Mapping[str, float]
+AvailabilityMask: TypeAlias = Mapping[str, bool]
+NodeFeatureMatrix: TypeAlias = torch.Tensor
+EdgeIndex: TypeAlias = torch.Tensor
+EdgeWeight: TypeAlias = torch.Tensor
+QCFeatureState: TypeAlias = tuple[float, float, float, float]
+FittedQCState: TypeAlias = Mapping[str, QCFeatureState]
+TokenPair: TypeAlias = tuple["TokenKey", torch.Tensor]
+RouteEdge: TypeAlias = tuple["TokenKey", "TokenKey"]
+ScoredRouteEdge: TypeAlias = tuple["TokenKey", "TokenKey", float]
 
 _MappingValue = TypeVar("_MappingValue")
 

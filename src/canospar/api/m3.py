@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+from collections.abc import Sequence
 from typing import Protocol
 
 from canospar.contracts.bands import (
@@ -11,7 +12,8 @@ from canospar.contracts.bands import (
     CanonicalSpectrumBundle,
 )
 from canospar.contracts.base import ScienceContext
-from canospar.contracts.spectral import CanonicalCoordinateSpec, SpectralBundle
+from canospar.contracts.spectral import CanonicalCoordinateSpec, SpectralBundle, SpectrumArtifact
+from canospar.validators.base import ValidationReport
 
 from ._contract_only import contract_only
 
@@ -27,10 +29,11 @@ class M3Backend(Protocol):
 
 
 def canonical_mass_coordinate(
-    spectrum: object,
+    spectrum: SpectrumArtifact,
     coordinate_spec: CanonicalCoordinateSpec,
+    context: ScienceContext,
 ) -> CanonicalSpectrumArtifact:
-    del spectrum, coordinate_spec
+    del spectrum, coordinate_spec, context
     raise contract_only("M3")
 
 
@@ -38,12 +41,12 @@ def build_canonical_bands(
     spectral_bundle: SpectralBundle,
     coordinate_spec: CanonicalCoordinateSpec,
     band_spec: BandSpec,
-) -> BandDefinition:
+) -> tuple[BandDefinition, ...]:
     del spectral_bundle, coordinate_spec, band_spec
     raise contract_only("M3")
 
 
-def validate_canonical_bands(bands: BandDefinition) -> object:
+def validate_canonical_bands(bands: Sequence[BandDefinition]) -> ValidationReport:
     del bands
     raise contract_only("M3")
 

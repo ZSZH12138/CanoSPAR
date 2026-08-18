@@ -17,7 +17,7 @@ def test_specs_are_frozen_and_have_explicit_backend_identity() -> None:
 
 def test_band_and_token_specs_keep_science_parameters() -> None:
     coordinate = CanonicalCoordinateSpec(method="empirical_spectral_cdf")
-    bands = BandSpec(band_count=4, tie_policy="right")
+    bands = BandSpec(band_count=4, tie_policy="keep_ties_intact")
     filtering = FilterSpec(backend="exact", parameters={"order": 3})
     tokenization = TokenizationSpec(backend="entmax", token_count=4)
 

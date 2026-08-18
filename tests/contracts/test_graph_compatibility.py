@@ -42,7 +42,7 @@ def make_meta() -> ArtifactMeta:
         artifact_type="MultiGraphArtifact",
         artifact_id="artifact-a",
         producer_module="M1",
-        module_contract_version="1.0.0",
+        module_contract_version="1.1.0",
         science_contract_version="1.1.0",
         input_artifact_ids=(),
         input_content_hashes=(),

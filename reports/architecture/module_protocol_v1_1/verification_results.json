@@ -1,0 +1,36 @@
+{
+  "overall_status": "PASS",
+  "module_protocol_spec_version": "1.1.0",
+  "protocol_sha256": "51475FAC300E46CAC42FE185FED28D223F3ED778B1FD8E0BEDEB92F94FBDF6FB",
+  "worktree": ".",
+  "branch": "codex/module-protocol-v1.1-local-repair",
+  "checks": {
+    "protocol_targeted_tests": {"status": "PASS", "passed": 10},
+    "protocol_and_execution_tests": {"status": "PASS", "passed": 14},
+    "contract_tests": {"status": "PASS", "passed": 62},
+    "full_tests": {"status": "PASS", "passed": 392, "warnings": 2},
+    "architecture_verifier": {"status": "PASS", "pass": 16, "fail": 0, "skip": 1},
+    "week1_acceptance": {"status": "PASS", "pass": 17, "fail": 0},
+    "week2_4_acceptance": {"status": "PASS", "pass": 12, "fail": 0, "coverage_percent": 85.0},
+    "ruff": {"status": "PASS"},
+    "ruff_format": {"status": "PASS"},
+    "mypy": {"status": "PASS", "source_files": 61},
+    "snakemake_dry_run": {"status": "PASS"},
+    "package_build": {"status": "PASS"}
+  },
+  "boundaries": {
+    "real_mri_read": false,
+    "private_metadata_read": false,
+    "network_access": false,
+    "gpu_used": false,
+    "server_required": false,
+    "scientific_algorithm_implemented": false,
+    "scientific_result_generated": false
+  },
+  "cache_policy": {
+    "m2_to_m9_v1_0_receipts_eligible": false,
+    "m0_p0_m1_v1_0_receipts_automatically_invalidated": false,
+    "runtime_profile_changes_science_key": false,
+    "numerics_profile_changes_reproduction_key": true
+  }
+}

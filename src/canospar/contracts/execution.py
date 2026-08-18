@@ -8,9 +8,10 @@ from typing import Generic, TypeVar
 
 from canospar.validators.base import ValidationIssue
 
-from .base import _freeze_string_tuple, require_non_empty_text
+from .base import MODULE_PROTOCOL_SPEC_VERSION, _freeze_string_tuple, require_non_empty_text
 
 _Artifact = TypeVar("_Artifact")
+_PROTOCOL_UPGRADE_INVALIDATED_MODULES = frozenset({"M2", "M3", "M4", "M5", "M6", "M7", "M8", "M9"})
 
 
 class CanonicalStatus(StrEnum):
@@ -96,7 +97,11 @@ def cache_is_eligible(
     validator_status: str,
 ) -> bool:
     return (
-        receipt.canonical_status in {CanonicalStatus.PASS, CanonicalStatus.READY}
+        (
+            receipt.module_id not in _PROTOCOL_UPGRADE_INVALIDATED_MODULES
+            or receipt.module_contract_version == MODULE_PROTOCOL_SPEC_VERSION
+        )
+        and receipt.canonical_status in {CanonicalStatus.PASS, CanonicalStatus.READY}
         and receipt.science_key == expected_science_key
         and receipt.reproduction_key == expected_reproduction_key
         and artifact_hash in receipt.output_hashes

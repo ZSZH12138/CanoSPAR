@@ -4,15 +4,18 @@ from __future__ import annotations
 
 from collections.abc import Mapping
 from dataclasses import dataclass, field
-from typing import Any, Protocol
+from typing import Protocol
 
 from canospar.contracts.base import (
+    JsonValue,
     MultiGraphArtifact,
     ScienceContext,
     _freeze_mapping,
     require_non_empty_text,
 )
 from canospar.contracts.imaging import ROIAlignedSample
+from canospar.data.contracts import GraphData
+from canospar.validators.base import ValidationReport
 
 from ._contract_only import contract_only
 
@@ -20,7 +23,7 @@ from ._contract_only import contract_only
 @dataclass(frozen=True)
 class GraphConstructionSpec:
     backend: str
-    parameters: Mapping[str, Any] = field(default_factory=dict)
+    parameters: Mapping[str, JsonValue] = field(default_factory=dict)
 
     def __post_init__(self) -> None:
         require_non_empty_text(self.backend, "backend")
@@ -45,6 +48,6 @@ def build_multigraph_sample(
     raise contract_only("M1")
 
 
-def validate_graph(graph: object) -> object:
+def validate_graph(graph: GraphData) -> ValidationReport:
     del graph
     raise contract_only("M1")

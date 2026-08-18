@@ -4,16 +4,25 @@ from __future__ import annotations
 
 from collections.abc import Mapping
 from dataclasses import dataclass, field
-from typing import Any
 
-from .base import ArtifactMeta, _freeze_mapping, require_non_empty_text
+from .base import (
+    ArtifactMeta,
+    JsonValue,
+    Tensor,
+    TokenKey,
+    TokenPair,
+    _freeze_mapping,
+    require_non_empty_text,
+)
+
+__all__ = ["TokenKey"]
 
 
 @dataclass(frozen=True)
 class TokenizationSpec:
     backend: str
     token_count: int
-    parameters: Mapping[str, Any] = field(default_factory=dict)
+    parameters: Mapping[str, JsonValue] = field(default_factory=dict)
 
     def __post_init__(self) -> None:
         require_non_empty_text(self.backend, "backend")
@@ -25,12 +34,12 @@ class TokenizationSpec:
 @dataclass(frozen=True)
 class TokenBundle:
     meta: ArtifactMeta
-    tokens: tuple[object, ...] = ()
-    assignment: object | None = None
+    tokens: tuple[TokenPair, ...] = ()
+    assignment: Tensor | None = None
     token_ids: tuple[str, ...] = ()
-    token_metadata: Mapping[str, object] = field(default_factory=dict)
-    token_mass: object | None = None
-    assignment_entropy: object | None = None
+    token_metadata: Mapping[str, JsonValue] = field(default_factory=dict)
+    token_mass: Tensor | None = None
+    assignment_entropy: Tensor | None = None
 
     def __post_init__(self) -> None:
         object.__setattr__(

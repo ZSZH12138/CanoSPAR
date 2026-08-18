@@ -43,7 +43,7 @@ Source-of-truth ownership is strict: M0 owns cohort/task/split; P0 owns ROI alig
 | M0 | existing metadata sources | DatasetManifestArtifact, SplitRegistryArtifact, TaskDefinitionArtifact | EXISTING + adapter |
 | P0 | ImagingInputBundle | ROIAlignedSample | PARTIAL |
 | M1 | ROIAlignedSample, GraphConstructionSpec, ScienceContext | MultiGraphArtifact | PARTIAL/contract boundary |
-| M2 | MultiGraphArtifact, M2Spec, ScienceContext | SpectralBundle | CONTRACT_ONLY |
+| M2 | MultiGraphArtifact, M2Spec, ScienceContext | SpectralBundle | IMPLEMENTED |
 | M3 | SpectralBundle, coordinate/band specs | CanonicalSpectrumBundle | CONTRACT_ONLY |
 | M4 | graph/spectral/canonical bundles | BandSignalBundle | CONTRACT_ONLY |
 | M5 | BandSignalBundle | TokenBundle | CONTRACT_ONLY |

@@ -1,0 +1,148 @@
+{
+  "module": "M2",
+  "module_protocol_spec_version": "1.1.0",
+  "implementation_status": "IMPLEMENTED",
+  "scientific_verification_status": "NOT_VERIFIED",
+  "real_mri_accessed": false,
+  "hcp_imaging_accessed": false,
+  "ppmi_imaging_accessed": false,
+  "server_connected": false,
+  "bita_used": false,
+  "gpu_used": false,
+  "laplacian": {
+    "status": "PASS",
+    "formula": "I_nonisolated - D^-1/2 A D^-1/2",
+    "symmetry_error": 0.0,
+    "negative_policy": "reject",
+    "asymmetric_policy": "reject",
+    "self_loop_policy": "reject",
+    "isolated_nodes_preserved": true
+  },
+  "spectrum": {
+    "status": "PASS",
+    "backend": "numpy.linalg.eigh",
+    "dtype": "float64",
+    "eigenvalue_min": 3.137412501463416e-17,
+    "eigenvalue_max": 2.0,
+    "residual_max": 4.440892098500626e-16,
+    "orthogonality_residual_max": 4.440892098500626e-16
+  },
+  "spectral_statistics": {
+    "status": "PASS",
+    "fixed_keys": true,
+    "explicit_m1_topology_required": true,
+    "missing_topology_fail_closed": true,
+    "binary_topology_required": true,
+    "quantile_method": "linear",
+    "path": {
+      "num_nodes": 4.0,
+      "num_edges": 3.0,
+      "density": 0.5,
+      "mean_degree": 1.5,
+      "connected_components": 1.0,
+      "algebraic_connectivity": 0.49999999999999994,
+      "zero_eigenvalue_count": 1.0,
+      "distinct_eigenvalue_count": 4.0,
+      "spectral_entropy": 0.8868595071429147,
+      "dirichlet_energy": 0.042893218813452594,
+      "canonical_topology_from_graph_data": true,
+      "zero_weight_edges_preserved": true,
+      "explicit_diffusion_times_only": true
+    }
+  },
+  "qc_fit": {
+    "status": "PASS",
+    "train_only": true,
+    "missing_training_keys_imputed_before_winsorization": true,
+    "state_shape": 4,
+    "constant_feature_policy": "constant-only QC_CONSTANT_FEATURE",
+    "nondegenerate_scale_one_not_constant": true
+  },
+  "qc_transform": {
+    "status": "PASS",
+    "missing_key_median_imputation": true,
+    "refit_during_transform": false,
+    "extreme_test_value_changes_state": false,
+    "state_hash": "837ccafa334e134be36bb4bd03ca2c2318429d56c89d704e521983c20599081c"
+  },
+  "lineage": {
+    "status": "PASS",
+    "graph_key_propagation": true,
+    "m1_graph_key_provenance": true,
+    "artifact_meta": true,
+    "implementation_identity": "9da8befdb4dc2140cf979a55152860666b4f8dc2896f90e7a01018bb33823491",
+    "numerics_identity": true,
+    "exact_science_spec_lineage": true,
+    "exact_bundle_input_lineage": true,
+    "state_hash_in_input_content_hashes": true,
+    "bundle_content_sha256": "a7a5d5ee9bb462ebcd48d6176ec481c66abc652860e9d5bcb31c72c4d05aef8b"
+  },
+  "permutation": {
+    "status": "PASS",
+    "laplacian_conjugation": true,
+    "spectrum_invariant": true,
+    "statistics_invariant": true,
+    "tolerance": 1e-12
+  },
+  "synthetic_integration": {
+    "status": "PASS",
+    "graph_count": 3,
+    "modalities": ["dmri", "fmri", "smri"],
+    "all_tensors_finite": true,
+    "scope": "SYNTHETIC_ANALYTIC_ONLY"
+  },
+  "cache_identity": {
+    "status": "PASS",
+    "same_input_same_hash": true,
+    "old_v1_0_receipt_ineligible": true,
+    "mismatch_fail_closed": true,
+    "runtime_excluded_from_science_key": true,
+    "numerics_changes_reproduction_key": true
+  },
+  "fail_closed": {
+    "status": "PASS",
+    "bad_graph": true,
+    "bad_metadata_lineage": true,
+    "bad_upstream_content_hash": true,
+    "bad_qc": true,
+    "bad_node_features": true,
+    "upstream_not_ready_or_invalidated": true
+  },
+  "repair_regressions": {
+    "tampered_bundle_receipt_suppressed": true,
+    "hand_reconstructed_bundle_receipt_suppressed": true,
+    "empty_bundle_rejected": true,
+    "forged_metadata_identity_rejected": true,
+    "forged_graph_key_provenance_rejected": true,
+    "forged_science_spec_lineage_rejected": true,
+    "bundle_qc_state_pair_mismatch_rejected": true,
+    "constant_qc_issue_recorded_in_receipt": true,
+    "winsorized_constant_qc_issue_recorded_in_receipt": true,
+    "all_active_numerical_tolerances_change_reproduction_key": true,
+    "forged_artifact_ids_rejected": true,
+    "non_binary_topology_rejected": true,
+    "normalized_qc_exact_feature_keys_validated": true,
+    "normalized_qc_state_id_hash_pair_validated": true,
+    "implementation_identity_bumped": true
+  },
+  "targeted_tests": {
+    "m2_unit": {"passed": 63, "failed": 0},
+    "m2_integration": {"passed": 8, "failed": 0},
+    "m2_protocol_contract": {"passed": 10, "failed": 0}
+  },
+  "architecture_tests": {
+    "architecture_verifier_pass": 16,
+    "architecture_verifier_fail": 0,
+    "architecture_verifier_skip": 1,
+    "contract_tests_passed": 63
+  },
+  "focused_m2_api_protocol_suite": {"passed": 81, "failed": 0, "warnings": 5},
+  "full_suite": {"passed": 464, "failed": 0, "warnings": 5},
+  "coverage": {"percent": null, "required_percent": 80.0, "status": "NOT_RUN", "reason": "coverage and pytest-cov are not installed in the approved environment"},
+  "ruff": {"status": "PASS"},
+  "ruff_format": {"status": "PASS"},
+  "mypy": {"status": "BASELINE_BLOCKED", "source_files": 67, "missing_yaml_stubs": 6, "historical_redundant_casts": 2, "focused_m2_status": "PASS", "focused_m2_source_files": 6},
+  "m3_executed": false,
+  "m4_executed": false,
+  "canonical_status": "PASS"
+}

@@ -1,5 +1,7 @@
 # CanoSPAR Architecture Contract v1 Implementation Report
 
+> This is the Architecture Contract v1 baseline report. Its historical gate counts and closure statements describe the architecture-only task that produced the baseline. A descendant M2 follow-up has since implemented the protocol-compliant Laplacian, exact spectrum, spectral statistics and QC path; the current M2 evidence is recorded in `reports/architecture/m2/M2_IMPLEMENTATION_REPORT.md`. M3-M9 remain `CONTRACT_ONLY`.
+
 ## 1. 最终结论
 
 **ARCHITECTURE_V1_FINALIZED**
@@ -14,7 +16,7 @@ Architecture Contract v1 的核心契约门禁 G01-G12 已通过，新增 Numeri
 - mypy 保留 2 个既有 pilot_atlas.py 错误；
 - Week1/Week2-4 acceptance verifier 未能在当前环境完整闭环。
 
-因此，本次结果可以作为 M2/M3 的正式接口基础，但不能解释为 M2/M3 算法已经实现，也不能解释为全仓科学运行环境已经合格。
+因此，本次 baseline 结果建立了 M2/M3 的正式接口基础，但其历史计数不代表后续 M2 算法状态，也不能解释为全仓科学运行环境已经合格。后续 M2 实现的功能与验证边界以独立 M2 报告为准；M3 仍未实现。
 
 ## 2. Git / Workspace
 
@@ -73,7 +75,7 @@ GraphData 和 BrainMultiGraphSample 的原始 import 仍由 canospar.data.contra
 | M0 | cohort/task/split metadata | existing references | manifest/split/task artifacts | load_dataset_manifest | 1.0.0 | EXISTING + adapter |
 | P0 | imaging/QC/ROI alignment | ImagingInputBundle | ROIAlignedSample | prepare_imaging_sample | 1.0.0 | PARTIAL |
 | M1 | graph topology | ROIAlignedSample/spec/context | MultiGraphArtifact | build_multigraph_sample | 1.0.0 | PARTIAL/contract boundary |
-| M2 | Laplacian/spectrum/QC | MultiGraphArtifact/M2Spec/context | SpectralBundle | run_m2 | 1.0.0 | CONTRACT_ONLY |
+| M2 | Laplacian/spectrum/QC | MultiGraphArtifact/M2Spec/context | SpectralBundle | run_m2 | 1.0.0 | IMPLEMENTED |
 | M3 | canonical spectral coordinate | SpectralBundle/coordinate/bands/context | CanonicalSpectrumBundle | run_m3 | 1.0.0 | CONTRACT_ONLY |
 | M4 | spectral filtering | graph/spectral/canonical/filter/context | BandSignalBundle | filter_bands | 1.0.0 | CONTRACT_ONLY |
 | M5 | band tokenization | BandSignalBundle/spec/context | TokenBundle | tokenize_bands | 1.0.0 | CONTRACT_ONLY |
@@ -328,7 +330,7 @@ The Python commands must use the configured Anaconda environment and the reposit
 
 ## 20. Recommendation
 
-Architecture Contract v1 is now the frozen interface baseline for a subsequent M2/M3 implementation branch. This closure does not implement M2/M3 and does not run scientific data or experiments.
+Architecture Contract v1 is the frozen interface baseline for subsequent module work. This historical closure did not itself implement M2/M3 and did not run scientific data or experiments; a descendant M2 follow-up now implements the M2 path, while M3 remains contract-only.
 
 进入条件已经满足：
 
@@ -354,7 +356,8 @@ Architecture Contract v1 is now the frozen interface baseline for a subsequent M
 | main modified | no | NO |
 | push performed | no | NO |
 | architecture baseline | `FROZEN` | FINALIZED |
-| M2+M3 implementation authorized | YES, from this SHA or an explicit descendant; implementation is not started in this task | YES |
+| M2 implementation | completed in a descendant follow-up; synthetic/analytic only and `NOT_VERIFIED` scientifically | IMPLEMENTED |
+| M3 implementation authorized | YES, from this SHA or an explicit descendant | YES |
 
 `ARCHITECTURE_CONTRACT_V1_BASELINE_SHA=fa947b625ff961c0a71b7dee6d93e1035bdddf28`
 

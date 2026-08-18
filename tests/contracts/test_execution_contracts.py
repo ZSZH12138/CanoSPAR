@@ -17,7 +17,7 @@ def make_receipt(
 ) -> CompletionReceipt:
     return CompletionReceipt(
         module_id="M1",
-        module_contract_version="1.0.0",
+        module_contract_version="1.1.0",
         science_contract_version="1.1.0",
         canonical_status=status,
         native_status="PASS_WITH_MANUAL_REVIEW",

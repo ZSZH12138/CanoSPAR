@@ -1,5 +1,6 @@
 {
   "architecture_contract_version": "1.0.0",
+  "module_protocol_spec_version": "1.1.0",
   "overall_status": "PASS",
   "pass_count": 16,
   "fail_count": 0,
@@ -63,12 +64,12 @@
     {
       "id": "G11_CONTRACT_TESTS_PASS",
       "status": "PASS",
-      "message": "52 passed, 3 warnings in 4.23s"
+      "message": "63 passed, 2 warnings in 4.35s"
     },
     {
       "id": "G12_NO_FAKE_SCIENTIFIC_IMPLEMENTATION",
       "status": "PASS",
-      "message": "M4-M9 are explicitly CONTRACT_ONLY"
+      "message": "M3-M9 are explicitly CONTRACT_ONLY"
     },
     {
       "id": "G13_EXISTING_REGRESSION_ACCEPTABLE",
