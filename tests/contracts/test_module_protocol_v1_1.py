@@ -167,10 +167,10 @@ def test_artifact_fields_no_longer_use_unbounded_object_annotations() -> None:
             assert "typing.Any" not in annotation
 
 
-def test_m2_is_implemented_but_m3_m4_stay_fail_closed() -> None:
+def test_m2_m3_are_implemented_but_m4_stays_fail_closed() -> None:
     with pytest.raises(ContractViolation, match="MultiGraphArtifact"):
         m2.run_m2(None, None, None)
-    with pytest.raises(NotImplementedError, match="M3"):
+    with pytest.raises(ContractViolation, match="spectral_bundle"):
         m3.run_m3(None, None, None, None)
     with pytest.raises(NotImplementedError, match="M4"):
         m4.filter_bands(None, None, None, None, None)

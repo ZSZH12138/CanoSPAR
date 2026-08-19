@@ -160,11 +160,11 @@ The repository ignores common dataset roots and neuroimaging/model files,
 including `data/`, `raw/`, `derivatives/`, `bids/`, `hcp/`, and `ppmi/`.
 Week 1 does not download or inspect real participant data.
 
-Generated, rerunnable runtime outputs belong under `artifacts/`. That tree is
-ignored by Git, so smoke outputs and later run artifacts are not committed
-accidentally. Curated, non-sensitive documentation and summary reports may be
-version-controlled under `docs/` and `reports/`. Do not force-add artifacts or
-restricted data.
+Generated, rerunnable runtime outputs belong under `artifacts/` or the ignored
+`reports/` tree. The repository keeps protocol documents and project-level
+explanations under version control; verification and stage reports are local
+outputs and must not be committed. Do not force-add artifacts or restricted
+data.
 
 Each smoke run writes a privacy-preserving provenance record containing:
 

@@ -44,6 +44,12 @@ build/**
 dist/**
 *.egg-info/
 
+# Generated verification, audit, and experiment reports. Keep only directory
+# placeholders; reproducible reports are created locally by verification tools.
+reports/**
+!reports/**/
+!reports/**/.gitkeep
+
 data/raw/
 data/manifests/private/
 *.cookie

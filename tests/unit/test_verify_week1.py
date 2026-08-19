@@ -58,7 +58,6 @@ def test_check_specs_have_the_required_order_and_module_invocations() -> None:
         "scripts/bootstrap.ps1",
         "tests/integration/test_smoke_cli.py",
         "tests/regression",
-        "reports/week1/WEEK1_IMPLEMENTATION_REPORT.md",
     )
     assert all(path in verify_week1._STRUCTURE_CHECK for path in required_paths)
     assert '"platform"' in verify_week1._PROVENANCE_CHECK

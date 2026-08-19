@@ -33,7 +33,7 @@
 4. 每个模块的输出必须被下游模块消费，或成为最终实验结果、验证结果、执行收据的一部分。没有消费者的中间产物不得加入接口。
 5. 输入和输出对象均为不可变 dataclass、不可变 tuple、只读 mapping 或复制后的 `torch.Tensor`。不得通过模块边界修改上游对象。
 6. 下游模块不得重新计算上游 source-of-truth。需要修改上游语义时，必须使对应上游 artifact 失效并重新生成。
-7. M3-M9 在当前基线中仍为 `CONTRACT_ONLY`；M2 已在满足第 21 节门禁后升级为 `IMPLEMENTED`。任何标记为 `CONTRACT_ONLY` 的模块可以拥有函数、类型和验证器，但不得返回伪造的科学结果。
+7. M4-M9 在当前基线中仍为 `CONTRACT_ONLY`；M2 和 M3 已在满足第 21 节门禁后升级为 `IMPLEMENTED`。任何标记为 `CONTRACT_ONLY` 的模块可以拥有函数、类型和验证器，但不得返回伪造的科学结果。
 8. `science_key` 不得包含 CPU/GPU 数量、主机名、服务器类别、Bita、SSH、WebTerminal、调度器并发等运行参数；数值语义变化必须通过 `NumericsProfile` 进入 `reproduction_key`。
 9. 真实 HCP/PPMI 原始数据、影像体数据、受限数据、凭据和个人绝对路径不进入 Git。Git 中只保存配置、schema、哈希、聚合报告、合成 fixture 和文档。
 
@@ -137,7 +137,7 @@ ScoredRouteEdge = tuple["TokenKey", "TokenKey", float]
 
 `FittedQCState` 是 M2 内部可序列化 fitted state，不是新的跨模块科学 artifact。任何持久化副本都必须稳定序列化并计算内容 SHA-256；其哈希必须进入消费该 state 的 `NormalizedQCArtifact`/`SpectralBundle` 的 `input_content_hashes`，从而进入 `science_key`，并同时写入 execution receipt。不能只靠文件名或 RuntimeProfile 识别。
 
-当前源码中尚未完成模块的部分字段和函数仍写作 `object`。这些是骨架占位，不是最终协议类型。实现 M3-M9 时，必须将源码注解、运行时校验和测试收敛到本节以及后文的具体类型；在收敛之前，相应模块保持 `CONTRACT_ONLY`。
+当前源码中尚未完成模块的部分字段和函数仍写作 `object`。这些是骨架占位，不是最终协议类型。实现尚未完成的 M4-M9 时，必须将源码注解、运行时校验和测试收敛到本节以及后文的具体类型；在收敛之前，相应模块保持 `CONTRACT_ONLY`。
 
 ## 5. 真实数据边界与 M0 输入
 
@@ -841,7 +841,7 @@ transform_qc or run_m2(..., qc_state=state)
 
 ## 11. M3：Canonical Spectral Mass Coordinate 与频带
 
-**当前状态：** `CONTRACT_ONLY`。<br>
+**当前状态：** `IMPLEMENTED`（synthetic/analytic only；scientific verification remains `NOT_VERIFIED`）。<br>
 **source-of-truth：** `canonical_coordinate_bands` 的 **mass-space coordinate 与 mass-space band definition**。<br>
 **输入：** `SpectralBundle`、`CanonicalCoordinateSpec`、`BandSpec`、`ScienceContext`。<br>
 **输出：** `CanonicalSpectrumBundle`。
@@ -1315,7 +1315,7 @@ M9 是只读模块，不能 retrain、调参或修改任何上游 artifact。必
 | P0 | `prepare_imaging_sample` | CONTRACT_ONLY |
 | M1 | `build_multigraph_sample`、`validate_graph` | CONTRACT_ONLY |
 | M2 | `build_normalized_laplacian`、`compute_spectrum`、`compute_spectral_statistics`、`fit_qc_transform`、`transform_qc`、`run_m2` | IMPLEMENTED；`run_m2` v1.1.0 增加 keyword-only `qc_state` |
-| M3 | `canonical_mass_coordinate`、`build_canonical_bands`、`validate_canonical_bands`、`run_m3` | CONTRACT_ONLY；v1.1.0 冻结 empirical mid-CDF + keep-ties-intact |
+| M3 | `canonical_mass_coordinate`、`build_canonical_bands`、`validate_canonical_bands`、`run_m3` | IMPLEMENTED；v1.1.0 empirical mid-CDF + keep-ties-intact，synthetic/analytic only |
 | M4 | `filter_exact`、`filter_chebyshev`、`filter_bands` | CONTRACT_ONLY；v1.1.0 冻结 graph-specific lambda materialization 和 transient eigenbasis 规则 |
 | M5 | `tokenize_bands`、`validate_token_bundle` | CONTRACT_ONLY |
 | M6 | `infer_roles`、`validate_role_bundle` | CONTRACT_ONLY |

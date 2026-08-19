@@ -19,6 +19,7 @@ def test_registry_contains_p0_and_m0_to_m9() -> None:
     assert registry["numerics_profile_schema_version"] == "1.0.0"
     assert registry["module_protocol_spec_version"] == "1.1.0"
     assert registry["modules"]["M2"]["implementation_status"] == "IMPLEMENTED"
+    assert registry["modules"]["M3"]["implementation_status"] == "IMPLEMENTED"
     assert registry["modules"]["M4"]["implementation_status"] == "CONTRACT_ONLY"
     assert registry["modules"]["M9"]["implementation_status"] == "CONTRACT_ONLY"
 
@@ -71,16 +72,8 @@ def test_m2_implementation_status_is_consistent_across_governance_docs() -> None
         "IMPLEMENTED |" in architecture
     )
 
-    report = (
-        ROOT / "reports/architecture/CANOSPAR_ARCHITECTURE_CONTRACT_V1_IMPLEMENTATION_REPORT.md"
-    ).read_text(encoding="utf-8")
-    assert (
-        "| M2 | Laplacian/spectrum/QC | MultiGraphArtifact/M2Spec/context | "
-        "SpectralBundle | run_m2 | 1.0.0 | IMPLEMENTED |" in report
-    )
-
     adr = (ROOT / "docs/decisions/0003-module-protocol-v1.1-m2-m4-contract-repair.md").read_text(
         encoding="utf-8"
     )
     assert "M2 is implemented" in adr
-    assert "M3-M9 remain `CONTRACT_ONLY`" in adr
+    assert "M4-M9 remain `CONTRACT_ONLY`" in adr

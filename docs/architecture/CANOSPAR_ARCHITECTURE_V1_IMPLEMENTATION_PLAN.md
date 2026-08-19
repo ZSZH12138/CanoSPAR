@@ -24,7 +24,7 @@
 
 **Files:** architecture docs, ADR 0002, configs/architecture/contracts_v1.yaml.
 
-**Interfaces:** consumes existing project docs and reports; produces the layer/module/source-of-truth registry used by every later task.
+**Interfaces:** consumes existing project documentation; produces the layer/module/source-of-truth registry used by every later task.
 
 - [ ] Write the documents and registry with exact module states.
 - [ ] Parse the registry with the configured Python environment.
@@ -71,7 +71,7 @@
 
 ### Task 5: Verifier, CI, and result placement
 
-**Files:** scripts/verify_architecture_contract.py, tests/contracts/test_architecture_registry.py, .github/workflows/ci.yml, placement map, generated verification_results.json.
+**Files:** scripts/verify_architecture_contract.py, tests/contracts/test_architecture_registry.py, .github/workflows/ci.yml, placement map, and locally generated verification output.
 
 **Interfaces:** consumes registry, imports, validators, source-of-truth map, and contract tests; produces G01-G15 results with overall_status and PASS/FAIL/SKIP counts.
 
@@ -83,7 +83,7 @@
 
 ### Task 6: Final report and release verification
 
-**Files:** reports/architecture/CANOSPAR_ARCHITECTURE_CONTRACT_V1_IMPLEMENTATION_REPORT.md and verification_results.json.
+**Files:** local verification output and the project protocol/architecture documents; stage reports are not repository deliverables.
 
 **Interfaces:** consumes all implementation evidence; produces an evidence-backed PASS/PARTIAL/BLOCKED report.
 

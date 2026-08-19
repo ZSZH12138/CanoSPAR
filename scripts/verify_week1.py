@@ -80,9 +80,6 @@ _STRUCTURE_CHECK = dedent(
         "reports/experiments",
         "reports/final",
         "reports/week1",
-        "reports/week1/hardware_gate.json",
-        "reports/week1/BLOCKER_REPORT.md",
-        "reports/week1/WEEK1_IMPLEMENTATION_REPORT.md",
         "artifacts",
     )
     missing = [item for item in required if not Path(item).exists()]

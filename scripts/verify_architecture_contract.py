@@ -22,7 +22,7 @@ if str(SOURCE_ROOT) not in sys.path:
 
 MODULE_NAMES = ("M0", "P0", "M1", "M2", "M3", "M4", "M5", "M6", "M7", "M8", "M9")
 MODULE_PROTOCOL_SPEC_VERSION = "1.1.0"
-CONTRACT_ONLY_MODULES = ("M3", "M4", "M5", "M6", "M7", "M8", "M9")
+CONTRACT_ONLY_MODULES = ("M4", "M5", "M6", "M7", "M8", "M9")
 REQUIRED_FILES = (
     "AGENTS.md",
     "docs/architecture/CANOSPAR_ARCHITECTURE_CONTRACT_V1.md",
@@ -37,7 +37,6 @@ REQUIRED_FILES = (
     "docs/decisions/0002-canospar-architecture-contract-v1.md",
     "docs/decisions/0003-module-protocol-v1.1-m2-m4-contract-repair.md",
     "configs/architecture/contracts_v1.yaml",
-    "reports/architecture/ARCHITECTURE_V1_BASELINE.json",
     "src/canospar/contracts/__init__.py",
     "src/canospar/contracts/base.py",
     "src/canospar/contracts/execution.py",
@@ -413,7 +412,7 @@ def run_checks(root: Path) -> dict[str, Any]:
             _check(
                 "G12_NO_FAKE_SCIENTIFIC_IMPLEMENTATION",
                 "PASS" if no_fake else "FAIL",
-                "M3-M9 are explicitly CONTRACT_ONLY",
+                "M4-M9 are explicitly CONTRACT_ONLY",
             )
         )
     except Exception as error:

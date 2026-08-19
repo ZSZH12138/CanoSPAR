@@ -21,4 +21,4 @@ For M2-M9, the module protocol version is part of cache eligibility. A v1.0.0 M2
 
 ## Non-goals
 
-This ADR does not implement MRI ingestion, graph construction outside the M1 boundary, canonical coordinates, filtering, tokenization, role inference, routing, prediction, evaluation, GPU execution, server execution, or scientific results. M2 is implemented by the follow-up protocol-compliant Laplacian, exact spectrum, spectral statistics and QC path; M3-M9 remain `CONTRACT_ONLY`.
+This ADR does not implement MRI ingestion, graph construction outside the M1 boundary, filtering, tokenization, role inference, routing, prediction, evaluation, GPU execution, server execution, or scientific results. M2 is implemented by a protocol-compliant follow-up, and M3 is implemented by the current protocol-compliant follow-up using synthetic/analytic evidence only; M4-M9 remain `CONTRACT_ONLY`.

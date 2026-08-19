@@ -12,9 +12,9 @@ list the main HCP protocol. The previous experiment contract and Week 1 sample
 object instead treated `Family_ID` as mandatory. That field is Restricted
 Access data and is no longer required by the preregistered main protocol.
 
-The previous contract also said that all outputs belonged under `artifacts/`,
-although the implementation plan reserves `docs/` and `reports/` for curated,
-non-sensitive evidence.
+The previous contract also said that all outputs belonged under `artifacts/`.
+The repository now separates versioned protocol/project documentation from
+ignored generated reports and runtime evidence.
 
 ## Decision
 
@@ -26,9 +26,8 @@ non-sensitive evidence.
   `cohort_metadata`.
 - `Family_ID` grouping is allowed only in a clearly labeled extension
   experiment if Restricted Access is obtained later.
-- Rerunnable runtime artifacts remain under ignored `artifacts/`; curated,
-  non-sensitive documentation and summary reports may be version-controlled
-  under `docs/` and `reports/`.
+- Rerunnable runtime artifacts remain under ignored `artifacts/`; generated
+  reports remain local under the ignored `reports/` tree.
 
 ## Consequences
 
